@@ -22,10 +22,5 @@ III. Shell setup
   Before you start make sure that you have installed git, vim
   and /repo/$USER catalogue exists with write and read priviledges.
   
-  cd /repo/$USER
-  git clone https://github.com/Miklak93/shell_setup.git
-  rm -f /home/$USER/.bashrc
-  rm -rf /home/$USER/.vim
-  ln -s /repo/$USER/shell_setup/vim/.vim /home/$USER/.vim
-  ln -s /repo/$USER/shell_setup/vim/.vimrc /home/$USER/.vimrc
-  ln -s /repo/$USER/shell_setup/bash/.bashrc /home/$USER/.bashrc
+  Clone this repository to /repo/$USER and evaluate setup_shell.sh
+  from scripts.
