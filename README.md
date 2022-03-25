@@ -28,4 +28,4 @@ III. Shell setup
   rm -rf /home/$USER/.vim
   ln -s /repo/$USER/shell_setup/vim/.vim /home/$USER/.vim
   ln -s /repo/$USER/shell_setup/vim/.vimrc /home/$USER/.vimrc
-  ln -s /repo/user/shell_setup/bash/.bashrc /home/$USER/.bashrc
+  ln -s /repo/$USER/shell_setup/bash/.bashrc /home/$USER/.bashrc
