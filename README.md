@@ -21,6 +21,6 @@ III. Shell setup
   REMARK:
   Before you start make sure that you have installed git, vim
   and /repo/$USER catalogue exists with write and read priviledges.
-  
+
   Clone this repository to /repo/$USER and evaluate setup_shell.sh
   from scripts.
