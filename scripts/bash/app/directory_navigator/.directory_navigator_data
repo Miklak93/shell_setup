@@ -4,7 +4,8 @@ list-records
 
 home /home/$USER
 repo /repo/$USER
-
 bashrc /repo/$USER/shell_setup/bash/bashrc
 scripts /repo/$USER/shell_setup/scripts
 vim /repo/$USER/shell_setup/vim
+dab /repo/gjyl24/TunerCommanderTest/vgtt_p2952_tuner/TunerCommander/AP_TunerDABLib/DABApp/
+usb /media/usb

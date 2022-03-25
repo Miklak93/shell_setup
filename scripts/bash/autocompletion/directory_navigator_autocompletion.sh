@@ -14,15 +14,15 @@ _expand_short_name() {
 _get_full_path() {
     local short_name="$1"
     if [[ -z "$short_name" ]]; then
-        eval echo "$(_get_directory_short_names)"
+        echo "$(_get_directory_short_names)"
     elif [[ -n "$short_name" ]] && [[ -z "$2" ]]; then
         eval echo "$(_expand_short_name "$short_name")"
     else
         # Remove last element from array
-        local expanded_short_name="$(_expand_short_name "$short_name")"
+        local expanded_short_name="$(eval echo $(_expand_short_name "$short_name"))"
         local directory_suffix_array="${@:2}"
         local directory_suffix="${directory_suffix_array// //}"
-        eval echo "$expanded_short_name$directory_suffix"
+        echo "$expanded_short_name/$directory_suffix"
     fi
 }
 

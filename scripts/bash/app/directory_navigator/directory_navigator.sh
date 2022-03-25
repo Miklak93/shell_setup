@@ -12,10 +12,10 @@ _expand_short_name() {
 }
 
 _build_full_path() {
-    local expanded_short_name="$(_expand_short_name "$1")"
+    local expanded_short_name="$(eval echo $(_expand_short_name "$1"))"
     local directory_suffix_array="${@:2}"
     local directory_suffix="${directory_suffix_array// //}"
-    echo "$expanded_short_name$directory_suffix"
+    echo "$expanded_short_name/$directory_suffix"
 }
 
 _add_to_directory_navigator_data() {
