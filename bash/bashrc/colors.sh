@@ -28,4 +28,4 @@ git_prompt ()
 }
 
 # Values \n, \h, \u itd are special bash prompt characters - see instructions
-PS1="${SIN_GREY}\u ${YELLOW}\t ${SIN_ORANGE}(\w) ${GREEN}\$(git_prompt)${SIN_RED} $(tput sgr0)\n-> "
+PS1="\n${SIN_GREY}\u ${YELLOW}\t ${SIN_ORANGE}(\w) ${GREEN}\$(git_prompt)${SIN_RED} $(tput sgr0)\n-> "
