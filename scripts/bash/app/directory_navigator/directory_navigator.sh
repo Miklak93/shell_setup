@@ -46,7 +46,7 @@ _run_directory_navigator() {
         "list-records")
             _list_directory_navigator_data;;
         *)
-            cd "$(_build_full_path "$@")"
+            eval cd "$(_build_full_path "$@")"
     esac
 }
 
