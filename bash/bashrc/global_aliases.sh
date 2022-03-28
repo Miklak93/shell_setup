@@ -4,7 +4,6 @@ alias lls='ls -l'
 alias push_on_draft='git push origin HEAD:refs/drafts/master'
 alias push_on_master='git push origin HEAD:refs/for/master'
 alias qt='qtcreator &'
-alias eclipse='/usr/share/eclipse-dsl/eclipse/eclipse &'
 
 #SCRIPTS - scripts variable is set in envvars
 alias dn='. $BASH_SCRIPTS_PATH/directory_navigator/directory_navigator.sh'
