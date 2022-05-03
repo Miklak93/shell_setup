@@ -1,14 +1,16 @@
 Instruction:
 
+At the beginning install git, vim, gnome-tweaks, gnome-shell-extensions, gnome-shell-extension-prefs
+
 I. General apperance
-   1. Install "Yaru-dark" theme suitable for your Ubuntu release
-   2. Type "Tweaks" in activities, go to "Apperance" tab and do:
+   1. Type "Tweaks" in activities, go to "Apperance" tab and do:
       i.   Applications: Yaru-dark
       ii.  Cursor: DMZ-BLACK
       iii. Icons: Yaru
-   3. Type "Settings" in activities, go to "Dock" tab and do:
+   2. Type "Settings" in activities, go to "Dock" under "Apperance" tab and do:
       i.  Position on screen: "Bottom"
       ii. Icon size: "24"
+   3. In order to remove "Home" from Desktop type "Extensions" in activities and disable "Desktop Icons"
 
 II. Terminal apperance
    1. Open terminal, click Edit -> Preferences and do:
