@@ -11,6 +11,10 @@ I. General apperance
       i.  Position on screen: "Bottom"
       ii. Icon size: "24"
    3. In order to remove "Home" from Desktop type "Extensions" in activities and disable "Desktop Icons"
+   4. In order to merge "Activities" tab with "Dock" panel perform
+      sudo apt install gnome-shell-extension-dash-to-panel
+      After that log out, go to "Gome tweaks", click "Extensions" in the left and then
+      select "Dash to panel"
 
 II. Terminal apperance
    1. Open terminal, click Edit -> Preferences and do:
