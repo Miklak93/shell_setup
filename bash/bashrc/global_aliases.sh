@@ -1,9 +1,9 @@
 #COMMANDS
+alias logoff='gnome-session-quit'
 alias ll='ls -la'
 alias lls='ls -l'
 alias push_on_draft='git push origin HEAD:refs/drafts/master'
 alias push_on_master='git push origin HEAD:refs/for/master'
-alias qt='qtcreator &'
 
 #SCRIPTS - scripts variable is set in envvars
 alias dn='. $BASH_SCRIPTS_PATH/directory_navigator/directory_navigator.sh'
