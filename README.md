@@ -5,7 +5,7 @@
 -----------------
 
 ## Preliminaries: 
-Start with installing **git**, **vim**, **gnome-tweaks**, **gnome-shell-extensions**, **xrdp**.<br /><br />
+Start with installing **git**, **vim**, **gnome-tweaks**, **gnome-shell-extensions**, **dconf-editor**, **xrdp**.<br /><br />
 
 ## General apperance:
 * Type **Tweaks** in **Activities**, go to **Apperance** tab and set up
