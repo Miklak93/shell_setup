@@ -23,7 +23,7 @@ Start with installing **git**, **vim**, **gnome-tweaks**, **gnome-shell-extensio
   After that log out, go to **Gome tweaks**, click **Extensions\** in the left and then
   select *Dash to panel*.
 * In order to disable logoff prompt
-  * Type **dconf** in **Activities*
+  * Type **dconf** in **Activities**
   * Move through **org** -> **gnome** -> **gnome-session**
   * Disable *Logout prompt*
 
