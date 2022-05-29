@@ -9,6 +9,9 @@ Start with
       sudo apt-get install git vim vim-gtk gnome-tweaks gnome-shell-extensions gnome-shell-extension-dash-to-panel dconf-editor xrdp 
 
 ## General apperance:
+**REMARK**
+To have specific Ubuntu color configuration follow the instruction from https://github.com/Jannomag/Yaru-Colors.
+
 * Type **Tweaks** in **Activities**, go to **Apperance** tab and set up
   * Applications: *Yaru*
   * Cursor: *DMZ-BLACK*
