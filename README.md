@@ -6,7 +6,7 @@
 Start with 
 
       sudo apt-get update
-      sudo apt-get install git vim vim-gtk gnome-tweaks gnome-shell-extensions dconf-editor xrdp
+      sudo apt-get install git vim vim-gtk gnome-tweaks gnome-shell-extensions gnome-shell-extension-dash-to-panel dconf-editor xrdp 
 
 ## General apperance:
 * Type **Tweaks** in **Activities**, go to **Apperance** tab and set up
@@ -17,11 +17,7 @@ Start with
   * Position on screen: *Bottom*
   * Icon size: *24*
 * In order to remove **Home** from Desktop type **Extensions** in **Activities** and disable *Desktop Icons*
-* In order to merge **Activities** tab with **Dock** panel perform
-
-      sudo apt install gnome-shell-extension-dash-to-panel
-      
-  After that log out, go to **Gome tweaks**, click **Extensions** in the left and then
+* In order to merge **Activities** tab with **Dock** panel log off, then go to **Gome tweaks**, click **Extensions** in the left and
   select *Dash to panel*.
 * In order to disable logoff prompt
   * Type **dconf** in **Activities**
