@@ -17,7 +17,7 @@ Start with
   * Position on screen: *Bottom*
   * Icon size: *24*
 * In order to remove **Home** from Desktop type **Extensions** in **Activities** and disable *Desktop Icons*
-* In order to merge **Activities** tab with **Dock** panel log off, then go to **Gome tweaks**, click **Extensions** in the left and
+* In order to merge **Activities** tab with **Dock** panel you need to log off, then go to **Gome tweaks**, click **Extensions** in the left and
   select *Dash to panel*.
 * In order to disable logoff prompt
   * Type **dconf** in **Activities**
