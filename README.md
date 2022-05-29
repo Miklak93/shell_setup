@@ -12,7 +12,7 @@ Start with installing **git**, **vim**, **gnome-tweaks**, **gnome-shell-extensio
   * Applications: *Yaru*
   * Cursor: *DMZ-BLACK*
   * Icons: *Yaru*
-* Type **Settings** in* **Activities**, go to **Dock** under **Apperance** tab and set up
+* Type **Settings** in **Activities**, go to **Dock** under **Apperance** tab and set up
   * Position on screen: *Bottom*
   * Icon size: *24*
 * In order to remove **Home** from Desktop type **Extensions** in **Activities** and disable *Desktop Icons*
