@@ -1,5 +1,5 @@
 <div align="center">
-      INSTRUCTIONS
+      <h1>INSTRUCTIONS</h1>
 </div>
 
 -----------------
@@ -20,7 +20,7 @@ Start with installing **git**, **vim**, **gnome-tweaks**, **gnome-shell-extensio
 
       sudo apt install gnome-shell-extension-dash-to-panel
       
-  After that log out, go to **Gome tweaks**, click **Extensions\** in the left and then
+  After that log out, go to **Gome tweaks**, click **Extensions** in the left and then
   select *Dash to panel*.
 * In order to disable logoff prompt
   * Type **dconf** in **Activities**
@@ -28,17 +28,17 @@ Start with installing **git**, **vim**, **gnome-tweaks**, **gnome-shell-extensio
   * Disable *Logout prompt*
 
 ## Terminal apperance
-* Open terminal, click "Edit", then "Preferences" and select
-   * Text: Uncheck "Terminal bell" 
-   * Colors: "Custom" with:
+* Open terminal, click **Edit**, then **Preferences** and select
+   * Text: Uncheck *Terminal bell*
+   * Colors: *Custom* with:
       * Default color: #ADA4A4, #000000
       * Check "Use transparency from system theme"
-   * Scrolling: uncheck "Limit scrollback"
+   * Scrolling: uncheck *Limit scrollback*
 
 ## Shell setup
    **REMARK: Before you start make sure that you have installed git, vim
    and /repo/$USER catalogue exists with write and read priviledges.**<br/>
-   Also install **vim-gtk** if vim "V" + "+" does not work
+   Also install **vim-gtk** if vim *V + "+"* does not work
    
 ## Remote connection
    Since you have installed xrdp go to /etc/xrdp/startwm.sh script and paste the following list just under the beginning
@@ -48,4 +48,4 @@ Start with installing **git**, **vim**, **gnome-tweaks**, **gnome-shell-extensio
     sudo sed -i '4 i\export GNOME_SHELL_SESSION_MODE=ubuntu' /etc/xrdp/startwm.sh
     sudo sed -i '4 i\export DESKTOP_SESSION=ubuntu' /etc/xrdp/startwm.sh
 
-  Finally, clone this repository to /repo/$USER and evaluate setup_shell.sh from scripts.
+  Finally, clone this repository to */repo/$USER* and evaluate setup_shell.sh from scripts.
