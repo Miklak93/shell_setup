@@ -2,8 +2,6 @@
       <h1>INSTRUCTIONS</h1>
 </div>
 
------------------
-
 ## Preliminaries: 
 Start with installing **git**, **vim**, **gnome-tweaks**, **gnome-shell-extensions**, **dconf-editor**, **xrdp**.<br /><br />
 
