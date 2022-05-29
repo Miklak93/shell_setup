@@ -32,11 +32,6 @@ Start with installing **git**, **vim**, **gnome-tweaks**, **gnome-shell-extensio
       * Default color: #ADA4A4, #000000
       * Check "Use transparency from system theme"
    * Scrolling: uncheck *Limit scrollback*
-
-## Shell setup
-   **REMARK: Before you start make sure that you have installed git, vim
-   and /repo/$USER catalogue exists with write and read priviledges.**<br/>
-   Also install **vim-gtk** if vim *V + "+"* does not work
    
 ## Remote connection
    Since you have installed xrdp go to /etc/xrdp/startwm.sh script and paste the following list just under the beginning
@@ -46,4 +41,9 @@ Start with installing **git**, **vim**, **gnome-tweaks**, **gnome-shell-extensio
     sudo sed -i '4 i\export GNOME_SHELL_SESSION_MODE=ubuntu' /etc/xrdp/startwm.sh
     sudo sed -i '4 i\export DESKTOP_SESSION=ubuntu' /etc/xrdp/startwm.sh
 
-  Finally, clone this repository to */repo/$USER* and evaluate setup_shell.sh from scripts.
+## Shell setup
+   **REMARK: Before you start make sure that you have installed git, vim
+   and /repo/$USER catalogue exists with write and read priviledges.**
+   Also install **vim-gtk** if vim *V + "+"* does not work
+
+   Clone this repository to */repo/$USER* and evaluate setup_shell.sh from scripts.
