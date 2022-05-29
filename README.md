@@ -3,7 +3,10 @@
 </div>
 
 ## Preliminaries: 
-Start with installing **git**, **vim**, **gnome-tweaks**, **gnome-shell-extensions**, **dconf-editor**, **xrdp**.<br /><br />
+Start with 
+
+      sudo apt-get update
+      sudo apt-get install git vim vim-gtk gnome-tweaks gnome-shell-extensions dconf-editor xrdp
 
 ## General apperance:
 * Type **Tweaks** in **Activities**, go to **Apperance** tab and set up
@@ -42,8 +45,4 @@ Start with installing **git**, **vim**, **gnome-tweaks**, **gnome-shell-extensio
     sudo sed -i '4 i\export DESKTOP_SESSION=ubuntu' /etc/xrdp/startwm.sh
 
 ## Shell setup
-   **REMARK: Before you start make sure that you have installed git, vim
-   and /repo/$USER catalogue exists with write and read priviledges.**
-   Also install **vim-gtk** if vim *V + "+"* does not work
-
    Clone this repository to */repo/$USER* and evaluate setup_shell.sh from scripts.
