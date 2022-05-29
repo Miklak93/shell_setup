@@ -29,7 +29,8 @@ Start with
    * Text: Uncheck *Terminal bell*
    * Colors: *Custom* with:
       * Default color: #ADA4A4, #000000
-      * Check "Use transparency from system theme"
+      * Uncheck *Use transparency from system theme*
+      * Check *Use transparent background*
    * Scrolling: uncheck *Limit scrollback*
    
 ## Remote connection
