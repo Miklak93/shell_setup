@@ -21,7 +21,7 @@ To have specific Ubuntu color configuration follow the instruction from https://
   * Icon size: *24*
 * In order to remove **Home** from Desktop type **Extensions** in **Activities** and disable *Desktop Icons*
 * In order to merge **Activities** tab with **Dock** panel you need to log off, then go to **Gome tweaks**, click **Extensions** in the left and
-  select *Dash to panel* (on Ubuntu 22.04 install gnome-shell-extension-manager and download "Dash to panel" plugin there)
+  select *Dash to panel* (on Ubuntu 22.04 install gnome-shell-extension-manager and download "Dash to panel" plugin there https://itsfoss.com/extension-manager/)
 * In order to disable logoff prompt
   * Type **dconf** in **Activities**
   * Move through **org** -> **gnome** -> **gnome-session**
