@@ -11,7 +11,7 @@ _get_command() {
         "master")
             echo "git push origin HEAD:refs/for/master";;
         "main")
-            echo "git push origin main";;
+            echo "git push origin HEAD:main";;
         *)
             echo "echo 'unknown command!'"
     esac
