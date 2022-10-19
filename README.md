@@ -2,11 +2,11 @@
       <h1>INSTRUCTIONS</h1>
 </div>
 
-## Preliminaries: 
-Start with 
+## Preliminaries:
+Start with
 
       sudo apt-get update
-      sudo apt-get install git vim vim-gtk gnome-tweaks gnome-shell-extensions gnome-shell-extension-dash-to-panel dconf-editor xrdp 
+      sudo apt-get install git vim vim-gtk gnome-tweaks gnome-shell-extensions gnome-shell-extension-dash-to-panel dconf-editor xrdp
 
 ## General apperance:
 **REMARK**
@@ -35,11 +35,11 @@ To have specific Ubuntu color configuration follow the instruction from https://
       * Uncheck *Use transparency from system theme*
       * Check *Use transparent background*
    * Scrolling: uncheck *Limit scrollback*
-   
+
 ## Remote connection
    Since you have installed xrdp go to /etc/xrdp/startwm.sh script and paste the following list just under the beginning
    script comment
-   
+
     sudo sed -i '4 i\export XDG_CURRENT_DESKTOP=ubuntu:GNOME' /etc/xrdp/startwm.sh
     sudo sed -i '4 i\export GNOME_SHELL_SESSION_MODE=ubuntu' /etc/xrdp/startwm.sh
     sudo sed -i '4 i\export DESKTOP_SESSION=ubuntu' /etc/xrdp/startwm.sh
