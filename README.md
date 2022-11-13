@@ -47,3 +47,4 @@ To have specific Ubuntu color configuration follow the instruction from https://
 ## Shell setup
    Clone this repository to */repo/$USER* and evaluate setup_shell.sh from scripts.
    Also remember to add <username> **ALL=(ALL) NOPASSWD: ALL** into your sudoers file (opening via "sudo visudo" command).
+   Some files could not be visible due to .gitignore. Check which ones shall be recreated.
