@@ -15,6 +15,11 @@ _create_links()
     ln -s /repo/$USER/shell_setup/bash/.inputrc /home/$USER/.inputrc
 }
 
+_create_files()
+{
+    touch /repo/$USER/shell_setup/bash/bashrc/local_aliases.sh
+}
+
 _has_been_reset()
 {
     if [[ -f ".shell_setup_done" ]]; then
@@ -44,6 +49,7 @@ _reset_shell()
         "Y" | "y")
             _remove_links
             _create_links
+            _create_files
             _create_confirmation_file
             echo "Done"
             ;;
