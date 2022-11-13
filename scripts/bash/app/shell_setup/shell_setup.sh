@@ -18,6 +18,18 @@ _create_links()
 _create_files()
 {
     touch /repo/$USER/shell_setup/bash/bashrc/local_aliases.sh
+    _fill_directory_navigator_data
+}
+
+_fill_directory_navigator_data()
+{
+    local content=$'add-record\nremove-record\nlist-records\n\n'
+    content="${content}"$'home /home/$USER\n'
+    content="${content}"$'repo /repo/$USER\n'
+    content="${content}"$'scripts /repo/$USER/shell_setup/scripts\n'
+    content="${content}"$'vim /repo/$USER/shell_setup/vim'
+
+    echo "${content}" > /repo/$USER/shell_setup/scripts/bash/app/directory_navigator/.directory_navigator_data
 }
 
 _has_been_reset()
