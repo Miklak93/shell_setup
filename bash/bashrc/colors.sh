@@ -8,8 +8,15 @@ SIN_BLUE="\e[38;5;69m"
 SIN_GREY="\e[38;5;246m"
 SIN_ORANGE="\e[38;5;208m"
 
+
+_shell()
+{
+    export LS_COLORS='di=1;33:ex=0;32'
+    LS_OPTIONS='--color=auto'
+}
+
 # 48 prefix is used for background colour from 256 palette - not needed here
-git_prompt ()
+_git_prompt()
 {
         if ! git rev-parse --git-dir > /dev/null 2>&1; then
             return 0
@@ -28,4 +35,5 @@ git_prompt ()
 }
 
 # Values \n, \h, \u itd are special bash prompt characters - see instructions
-PS1="\n${SIN_GREY}\u ${YELLOW}\t ${SIN_ORANGE}(\w) ${GREEN}\$(git_prompt)${SIN_RED} $(tput sgr0)\n-> "
+_shell
+PS1="\n${SIN_GREY}\u ${YELLOW}\t ${SIN_ORANGE}(\w) ${GREEN}\$(_git_prompt)${SIN_RED} $(tput sgr0)\n-> "

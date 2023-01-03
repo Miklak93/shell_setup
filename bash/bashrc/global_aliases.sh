@@ -1,5 +1,6 @@
 #COMMANDS
 alias logoff='gnome-session-quit'
+alias ls='ls $LS_OPTIONS'
 alias ll='ls -la'
 alias lls='ls -l'
 alias push_on_draft='git push origin HEAD:refs/drafts/master'
