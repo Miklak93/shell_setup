@@ -11,7 +11,7 @@ SIN_ORANGE="\e[38;5;208m"
 
 _shell()
 {
-    export LS_COLORS='di=1;33:ex=0;32'
+    export LS_COLORS='di=1;33:ex=0;32:ln=0;90'
     LS_OPTIONS='--color=auto'
 }
 
