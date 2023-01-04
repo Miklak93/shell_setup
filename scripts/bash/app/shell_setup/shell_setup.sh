@@ -19,6 +19,7 @@ _create_files()
 {
     touch /repo/$USER/shell_setup/bash/bashrc/local_aliases.sh
     _fill_directory_navigator_data
+    sudo mkdir /proj
 }
 
 _fill_directory_navigator_data()
