@@ -18,6 +18,7 @@ _create_links()
 _create_files()
 {
     sudo mkdir /proj
+    chmod 777 /proj
     touch /repo/$USER/shell_setup/bash/bashrc/local_aliases.sh
     _fill_directory_navigator_data
 }
