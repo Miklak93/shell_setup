@@ -2,14 +2,6 @@
 ####################################INSTRUCTIONS#################################
 #Script arguments: None
 ####################################FUNCTIONS####################################
-_check_priviledges()
-{
-    if [ "$EUID" -ne 0 ]; then
-        echo "Please run with root priviledges!"
-        exit
-    fi
-}
-
 _create_confirmation_file()
 {
     touch ".shell_setup_done"
@@ -25,10 +17,9 @@ _create_links()
 
 _create_files()
 {
-    mkdir /proj
+    sudo mkdir /proj
     touch /repo/$USER/shell_setup/bash/bashrc/local_aliases.sh
     _fill_directory_navigator_data
-    sudo mkdir /proj
 }
 
 _fill_directory_navigator_data()
@@ -85,5 +76,4 @@ _reset_shell()
     esac
 }
 #####################################MAIN######################################
-_check_priviledges
 _reset_shell
