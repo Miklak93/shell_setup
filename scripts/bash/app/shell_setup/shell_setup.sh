@@ -7,6 +7,12 @@ _create_confirmation_file()
     touch ".shell_setup_done"
 }
 
+_create_proj_dir()
+{
+    sudo mkdir /proj
+    sudo chmod 777 /proj
+}
+
 _create_links()
 {
     ln -s /repo/$USER/shell_setup/vim/.vim /home/$USER/.vim
@@ -17,8 +23,8 @@ _create_links()
 
 _create_files()
 {
-    sudo mkdir /proj
-    chmod 777 /proj
+
+    _create_proj_dir
     touch /repo/$USER/shell_setup/bash/bashrc/local_aliases.sh
     _fill_directory_navigator_data
 }
