@@ -1,4 +1,4 @@
-BASHRC_CONFIG_DIR="/repo/$USER/shell_setup/bash/configuration"
+BASHRC_CONFIG_DIR="/repo/$USER/shell_setup/shell/configuration"
 
 # Set 256 colors in terminal - use only when needed
 #. /etc/profile.d/256term.sh

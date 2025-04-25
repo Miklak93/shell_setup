@@ -17,29 +17,28 @@ _create_links()
 {
     ln -s /repo/$USER/shell_setup/vim/.vim /home/$USER/.vim
     ln -s /repo/$USER/shell_setup/vim/.vimrc /home/$USER/.vimrc
-    ln -s /repo/$USER/shell_setup/bash/.bashrc /home/$USER/.bashrc
-    ln -s /repo/$USER/shell_setup/bash/.inputrc /home/$USER/.inputrc
+    ln -s /repo/$USER/shell_setup/shell/.bashrc /home/$USER/.bashrc
+    ln -s /repo/$USER/shell_setup/shell/.inputrc /home/$USER/.inputrc
 }
 
 _create_files()
 {
 
     _create_proj_dir
-    touch /repo/$USER/shell_setup/bash/bashrc/local_aliases.sh
+    touch /repo/$USER/shell_setup/shell/configuration/local_aliases.sh
     _fill_dynamic_alias_data
 }
 
 _fill_dynamic_alias_data()
 {
     local content=$'add-record\nremove-record\nlist-records\n\n'
-    content="${content}"$'bashrc /repo/$USER/shell_setup/bash/bashrc\n'
     content="${content}"$'home /home/$USER\n'
     content="${content}"$'proj /proj\n'
     content="${content}"$'repo /repo/$USER\n'
     content="${content}"$'shell_setup /repo/$USER/shell_setup\n'
     content="${content}"$'vim /repo/$USER/shell_setup/vim'
 
-    echo "${content}" > /repo/$USER/shell_setup/scripts/bash/app/dynamic_alias/.dynamic_alias_data
+    echo "${content}" > /repo/$USER/shell_setup/scripts/dynamic_alias/.dynamic_alias_data
 }
 
 _has_been_reset()
