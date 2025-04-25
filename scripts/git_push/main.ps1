@@ -3,7 +3,4 @@
 ################################################################################
 
 # Import the module
-Import-Module "$env:PSScriptsPath\git_push\git_push.psm1"
-
-# Define the alias
-Set-Alias -Name git-push -Value Invoke-GitPush
+Import-Module "$env:ScriptsPath\git_push\git_push.psm1"

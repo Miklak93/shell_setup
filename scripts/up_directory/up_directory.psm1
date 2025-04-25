@@ -1,10 +1,7 @@
 ####################################FUNCTIONS###################################
 
-function Invoke-UpDirectory
-{
-    param(
-        [string]$Target
-    )
+function Invoke-UpDirectory {
+    param([string]$Target)
 
     if ([string]::IsNullOrWhiteSpace($Target)) {
         Set-Location -Path $HOME
@@ -14,38 +11,29 @@ function Invoke-UpDirectory
     $currentPath = (Get-Location).Path
     $segments = $currentPath -split '[\\/]' | Where-Object { $_ -ne '' }
 
-    $targetPath = ''
+    $targetPath = ""
     foreach ($segment in $segments) {
-        $targetPath = Join-Path $targetPath $segment
-        if ($segment -eq $Target) { break }
+        $targetPath += "$segment\"
+        if ($segment -eq $Target) {
+            Set-Location $targetPath
+            return
+        }
     }
-
-    if (Test-Path $targetPath)
-    {
-        Set-Location $targetPath
-    }
-    else
-    {
-        Write-Host "Target directory '$Target' not found in current path." -ForegroundColor Red
-    }
+    Write-Host "Target directory '$Target' not found in the current path." -ForegroundColor Red
 }
 
 #################################AUTOCOMPLETION#################################
-Register-ArgumentCompleter -CommandName upd -ScriptBlock
-{
-    param(
-        $commandName,
-        $parameterName,
-        $wordToComplete,
-        $commandAst,
-        $fakeBoundParameters
-    )
+Register-ArgumentCompleter -CommandName Invoke-UpDirectory -ParameterName Target -ScriptBlock {
+    param($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameters)
 
     $currentPath = (Get-Location).Path
     $segments = $currentPath -split '[\\/]' | Where-Object { $_ -ne '' }
 
+    # Only return completions if there are matching segments
     $segments | Where-Object { $_ -like "$wordToComplete*" } | ForEach-Object {
         [System.Management.Automation.CompletionResult]::new($_, $_, 'ParameterValue', $_)
     }
 }
 
+#####################################ALIASES####################################
+Set-Alias -Name upd -Value Invoke-UpDirectory

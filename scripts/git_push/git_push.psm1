@@ -9,7 +9,7 @@ function Get-GitPushCommand {
         "draft"   { "git push origin HEAD:refs/drafts/master" }
         "master"  { "git push origin HEAD:refs/for/master" }
         "main"    { "git push origin HEAD:main" }
-        default   { "Write-Host 'Unknown command!'" }
+        default   { throw 'git push: Unknown command!' }
     }
 }
 
@@ -23,9 +23,13 @@ function Invoke-GitPush {
 }
 
 #################################AUTOCOMPLETION#################################
-Register-ArgumentCompleter -CommandName git-push -ParameterName Target -ScriptBlock {
+Register-ArgumentCompleter -CommandName Invoke-GitPush -ParameterName Target -ScriptBlock {
     param($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParams)
+
     "private", "draft", "master", "main" | Where-Object { $_ -like "$wordToComplete*" } | ForEach-Object {
         [System.Management.Automation.CompletionResult]::new($_, $_, 'ParameterValue', $_)
     }
 }
+
+#####################################ALIASES####################################
+Set-Alias -Name git-push -Value Invoke-GitPush

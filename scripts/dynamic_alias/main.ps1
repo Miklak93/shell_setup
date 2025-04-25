@@ -3,7 +3,4 @@
 ################################################################################
 
 # Import the module
-Import-Module "$env:PSScriptsPath\dynamic_alias\dynamic_alias.psm1"
-
-# Define the alias
-Set-Alias -Name da -Value Invoke-DynamicAlias
+Import-Module "$env:ScriptsPath\dynamic_alias\dynamic_alias.psm1"

@@ -1,3 +1,4 @@
+# Create the shortcut for environment resources
 BASHRC_CONFIG_DIR="/repo/$USER/shell_setup/shell/configuration"
 
 # Set 256 colors in terminal - use only when needed
@@ -11,6 +12,9 @@ shopt -s checkwinsize
 
 # Enable git completion
 . /etc/bash_completion.d/git-prompt
+
+# Import utility functions module
+. "$BASHRC_CONFIG_DIR/utils.sh"
 
 # Load necessary modules
 . "$BASHRC_CONFIG_DIR/modules.sh"
@@ -27,9 +31,6 @@ shopt -s checkwinsize
 
 # Scripts to source
 . "$BASHRC_CONFIG_DIR/sources.sh"
-
-# Functions and utils
-. "$BASHRC_CONFIG_DIR/utils.sh"
 
 # Disable ctrl + 1 ssty signal sent to have block text matching in vim
 stty start undef

@@ -1,9 +1,21 @@
-$PROFILE_CONFIG_DIR = "C:\Users\$env:USER\Repo\shell_setup\shell\configuration"
+# Create the shortcut for environment resources
+$ProfileConfigDir = "C:\Users\$env:UserName\Repo\shell_setup\shell\configuration"
 
-Import-Module "$PROFILE_CONFIG_DIR\modules.psm1"
-Import-Module "$PROFILE_CONFIG_DIR\colors.psm1"
-Import-Module "$PROFILE_CONFIG_DIR\envvars.psm1"
-Import-Module "$PROFILE_CONFIG_DIR\global_aliases.psm1"
-Import-Module "$PROFILE_CONFIG_DIR\local_aliases.psm1"
-Import-Module "$PROFILE_CONFIG_DIR\sources.psm1"
-Import-Module "$PROFILE_CONFIG_DIR\utils.psm1"
+# Import utility functions module
+Import-Module "$ProfileConfigDir\utils.psm1"
+
+# Load necessary modules
+. "$ProfileConfigDir\modules.ps1"
+
+# Define terminal colors
+. "$ProfileConfigDir\colors.ps1"
+
+# Set aliases
+. "$ProfileConfigDir\global_aliases.ps1"
+. "$ProfileConfigDir\local_aliases.ps1"
+
+# Environmental variables
+. "$ProfileConfigDir\envvars.ps1"
+
+# Scripts to be sourced
+. "$ProfileConfigDir\sources.ps1"
