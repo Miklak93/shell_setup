@@ -1,4 +1,4 @@
-BASHRC_CONFIG_DIR="/repo/$USER/shell_setup/bash/bashrc"
+BASHRC_CONFIG_DIR="/repo/$USER/shell_setup/bash/configuration"
 
 # Set 256 colors in terminal - use only when needed
 #. /etc/profile.d/256term.sh
@@ -15,8 +15,6 @@ shopt -s checkwinsize
 # Load necessary modules
 . "$BASHRC_CONFIG_DIR/modules.sh"
 
-# Enable git prompt features
-
 # Define terminal colors
 . "$BASHRC_CONFIG_DIR/colors.sh"
 
@@ -27,5 +25,11 @@ shopt -s checkwinsize
 # Environmental variables
 . "$BASHRC_CONFIG_DIR/envvars.sh"
 
+# Scripts to source
+. "$BASHRC_CONFIG_DIR/sources.sh"
+
 # Functions and utils
 . "$BASHRC_CONFIG_DIR/utils.sh"
+
+# Disable ctrl + 1 ssty signal sent to have block text matching in vim
+stty start undef

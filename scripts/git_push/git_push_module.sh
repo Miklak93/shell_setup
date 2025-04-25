@@ -1,4 +1,5 @@
 #!/bin/bash
+
 ###################################INSTRUCTIONS#################################
 # Script arguments: One of private, draft, master, main
 ####################################FUNCTIONS###################################
@@ -22,5 +23,15 @@ _git_push() {
     eval "${cmd}"
 }
 
-######################################MAIN######################################
-_git_push "$1"
+#################################AUTOCOMPLETION#################################
+_git_push_autocompletion()
+{
+    COMPREPLY=()
+
+    local current_word="${COMP_WORDS[COMP_CWORD]}"
+    local possible_words="private draft master main"
+
+    COMPREPLY=( $(compgen -W "${possible_words}" -- ${current_word}) )
+
+    return 0
+}
