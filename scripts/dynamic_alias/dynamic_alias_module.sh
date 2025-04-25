@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ####################################FUNCTIONS###################################
-DATA="$SCRIPTS_PATH/dynamic_alias/.dynamic_alias_data"
+DATA="$SCRIPTS_PATH/dynamic_alias/.dynamic_alias_data.sh"
 
 _get_directory_short_names() {
     echo "$(awk '{print $1}' $DATA)"

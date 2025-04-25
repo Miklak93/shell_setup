@@ -1,5 +1,7 @@
 vim/.vim/.netrwhist*
-bash/bashrc/local_aliases.sh
-scripts/bash/app/directory_navigator/.directory_navigator_data
-scripts/bash/app/shell_setup/.shell_setup_done
-scripts/bash/app/work_scripts
+shell/configuration/local_aliases.sh
+shell/configuration/local_aliases.ps1
+scripts/dynamic_alias/.dynamic_alias_data.sh
+scripts/dynamic_alias/.dynamic_alias_data.ps1
+scripts/shell_setup/.shell_setup_done.sh
+scripts/shell_setup/.shell_setup_done.ps1
