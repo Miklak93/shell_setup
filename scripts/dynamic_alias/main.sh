@@ -7,7 +7,7 @@
 # Source the module
 source "$SCRIPTS_PATH/dynamic_alias/dynamic_alias_module.sh"
 
-# Create the alias
+# Define the alias
 alias da='_dynamic_alias'
 
 # Setup autocompletion

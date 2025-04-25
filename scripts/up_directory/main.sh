@@ -8,7 +8,7 @@
 # Source the module
 source "$SCRIPTS_PATH/up_directory/up_directory_module.sh"
 
-# Create the alias
+# Define the alias
 alias upd='_up_directory'
 
 # Setup autocompletion

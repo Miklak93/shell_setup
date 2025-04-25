@@ -88,6 +88,7 @@ _get_possible_words() {
     echo "${possible_words[@]}"
 }
 
+#################################AUTOCOMPLETION#################################
 _dynamic_alias_autocompletion() {
     # ${COMP_WORDS[0]} means "dn"
     local current_word="${COMP_WORDS[COMP_CWORD]}"

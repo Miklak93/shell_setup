@@ -1,9 +1,8 @@
 #!/bin/bash
 
-###################################INSTRUCTIONS#################################
-# Script arguments: One of private, draft, master, main
 ####################################FUNCTIONS###################################
-_get_command() {
+_get_command()
+{
     case "${1}" in
         "private")
             echo "git push origin HEAD:refs/for/master%private";;
@@ -18,7 +17,8 @@ _get_command() {
     esac
 }
 
-_git_push() {
+_git_push()
+{
     local cmd="$(_get_command ${1})"
     eval "${cmd}"
 }

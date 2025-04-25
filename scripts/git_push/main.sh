@@ -7,7 +7,7 @@
 # Source the module
 source "$SCRIPTS_PATH/git_push/git_push_module.sh"
 
-# Create the alias
+# Define the alias
 alias git-push='_git_push'
 
 # Setup autocompletion
