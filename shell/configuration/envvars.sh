@@ -1,1 +1,0 @@
-SHELL_SETUP_SCRIPTS_PATH=/repo/mikolaj/shell_setup/scripts
