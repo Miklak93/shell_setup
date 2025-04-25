@@ -52,8 +52,6 @@ _apply_dynamic_alias() {
     fi
 }
 
-#################################### WRAPPER ###################################
-
 _dynamic_alias() {
     local request="$1"
     shift

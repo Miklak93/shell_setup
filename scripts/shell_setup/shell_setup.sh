@@ -2,75 +2,80 @@
 ####################################INSTRUCTIONS#################################
 #Script arguments: None
 ####################################FUNCTIONS####################################
-_create_confirmation_file()
-{
-    touch ".shell_setup_done"
+SHELL_SETUP_PATH="$(dirname "$(dirname "$(dirname "$(realpath "${BASH_SOURCE[0]}")")")")"
+
+_setup_link() {
+    local source=$1
+    local destination=$2
+
+    # Unlink the destination if it exists
+    if [ -L "$destination" ]; then
+        echo "Unlinking existing symlink: $destination"
+        unlink "$destination"
+    fi
+
+    # Create the symlink
+    # -s creates symbolic link, -f forces it
+    echo "Creating symlink: $destination -> $source"
+    ln -sf "$source" "$destination"
 }
 
-_create_proj_dir()
+_setup_links()
 {
-    sudo mkdir /proj
-    sudo chmod 777 /proj
+    _setup_link $SHELL_SETUP_PATH/vim/.vim ~/.vim
+    _setup_link $SHELL_SETUP_PATH/vim/.vimrc ~/.vimrc
+    _setup_link $SHELL_SETUP_PATH/shell/.bashrc ~/.bashrc
+    _setup_link $SHELL_SETUP_PATH/shell/.inputrc ~/.inputrc
 }
 
-_create_links()
+_setup_files()
 {
-    ln -s /repo/$USER/shell_setup/vim/.vim /home/$USER/.vim
-    ln -s /repo/$USER/shell_setup/vim/.vimrc /home/$USER/.vimrc
-    ln -s /repo/$USER/shell_setup/shell/.bashrc /home/$USER/.bashrc
-    ln -s /repo/$USER/shell_setup/shell/.inputrc /home/$USER/.inputrc
-}
+    # Local aliases - ignored by git
+    local local_aliases_path="$SHELL_SETUP_PATH/shell/configuration/local_aliases.sh"
+    local dynamic_alias_path="$SHELL_SETUP_PATH/scripts/dynamic_alias/.dynamic_alias_data.sh"
 
-_create_files()
-{
-    _create_proj_dir
-    touch /repo/$USER/shell_setup/shell/configuration/local_aliases.sh
-    _fill_dynamic_alias_data
-}
+    touch "$local_aliases_path"
 
-_fill_dynamic_alias_data()
-{
-    local content=$'add-record\nremove-record\nlist-records\n\n'
-    content="${content}"$'home /home/$USER\n'
-    content="${content}"$'repo /repo/$USER\n'
-    content="${content}"$'shell_setup /repo/$USER/shell_setup\n'
-    content="${content}"$'vim /repo/$USER/shell_setup/vim'
-
-    echo "${content}" > /repo/$USER/shell_setup/scripts/dynamic_alias/.dynamic_alias_data
-}
-
-_has_been_reset()
-{
-    if [[ -f ".shell_setup_done" ]]; then
+    if [[ $? -ne 0 ]]; then
         return 1
     fi
-    return 0
-}
 
-_remove_links()
-{
-    rm -f  /home/$USER/.bashrc
-    rm -f  /home/$USER/.inputrc
-    rm -rf /home/$USER/.vim
-    rm -rf /home/$USER/.vimrc
+    # Dynamic alias initial data
+    local content=""
+    content="${content}home /home/$USER"$'\n'
+    content="${content}shell_setup $SHELL_SETUP_PATH"$'\n'
+    content="${content}vim $SHELL_SETUP_PATH/shell_setup/vim"$'\n'
+
+    echo "${content}" > $dynamic_alias_path
+
+    if [[ $? -ne 0 ]]; then
+        return 1
+    fi
 }
 
 _reset_shell()
 {
-    local do_reset="Y"
-    _has_been_reset
-    if [[ $? == 1 ]]; then
-        echo "Shell setup was done earlier!"
-        read -p "Do you want to reset settings? [Y\N]: " do_reset
-        echo ""
+    rm -rf ".shell_setup_done.sh"
+    _setup_links
+    result=$(_setup_files)
+    if [[ -n "$result" ]]; then
+        return 1
     fi
+    touch ".shell_setup_done.sh"
+    return 0
+}
+
+_setup_shell()
+{
+    local do_reset="Y"
+    if [[ -f ".shell_setup_done.sh" ]]; then
+        read -p "Shell is already setup - do you really want to reset settings? [Y\N]: " do_reset
+    fi
+
     case "$do_reset" in
         "Y" | "y")
-            _remove_links
-            _create_links
-            _create_files
-            _create_confirmation_file
-            echo "Done"
+            _reset_shell
+            echo "Done!"
             ;;
         "N" | "n")
             echo "Shell has not been reset!"
@@ -80,4 +85,4 @@ _reset_shell()
     esac
 }
 #####################################MAIN######################################
-_reset_shell
+_setup_shell

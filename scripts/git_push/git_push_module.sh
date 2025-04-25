@@ -13,13 +13,18 @@ _get_command()
         "main")
             echo "git push origin HEAD:main";;
         *)
-            echo "echo 'unknown command!'"
+            echo "unknown command!"
+            return 1
     esac
 }
 
 _git_push()
 {
     local cmd="$(_get_command ${1})"
+    if [[ $? -ne 0 ]]; then
+        echo "git-push: Error: ${cmd}"
+        return 1
+    fi
     eval "${cmd}"
 }
 
