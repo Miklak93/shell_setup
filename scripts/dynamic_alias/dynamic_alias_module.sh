@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ################################### CONFIG #####################################
-DATA="$SCRIPTS_PATH/dynamic_alias/.dynamic_alias_data.sh"
+DATA="$SHELL_SETUP_SCRIPTS_PATH/dynamic_alias/.dynamic_alias_data.sh"
 
 ################################# CORE FUNCTIONS ###############################
 

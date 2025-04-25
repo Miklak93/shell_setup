@@ -3,6 +3,10 @@
 #Script arguments: None
 ####################################FUNCTIONS####################################
 SHELL_SETUP_PATH="$(dirname "$(dirname "$(dirname "$(realpath "${BASH_SOURCE[0]}")")")")"
+SHELL_SETUP_VIM_PATH="$SHELL_SETUP_PATH/vim"
+SHELL_SETUP_SCRIPTS_PATH="$SHELL_SETUP_PATH/scripts"
+SHELL_SETUP_PROFILES_PATH="$SHELL_SETUP_PATH/shell"
+SHELL_SETUP_CONFIGURATION_PATH="$SHELL_SETUP_PROFILES_PATH/configuration"
 
 _setup_link() {
     local source=$1
@@ -10,41 +14,38 @@ _setup_link() {
 
     # Unlink the destination if it exists
     if [ -L "$destination" ]; then
-        echo "Unlinking existing symlink: $destination"
         unlink "$destination"
     fi
 
     # Create the symlink
     # -s creates symbolic link, -f forces it
-    echo "Creating symlink: $destination -> $source"
     ln -sf "$source" "$destination"
 }
 
 _setup_links()
 {
-    _setup_link $SHELL_SETUP_PATH/vim/.vim ~/.vim
-    _setup_link $SHELL_SETUP_PATH/vim/.vimrc ~/.vimrc
-    _setup_link $SHELL_SETUP_PATH/shell/.bashrc ~/.bashrc
-    _setup_link $SHELL_SETUP_PATH/shell/.inputrc ~/.inputrc
+    _setup_link $SHELL_SETUP_VIM_PATH/.vim ~/.vim
+    _setup_link $SHELL_SETUP_VIM_PATH/.vimrc ~/.vimrc
+    _setup_link $SHELL_SETUP_PROFILES_PATH/.bashrc ~/.bashrc
+    _setup_link $SHELL_SETUP_PROFILES_PATH/.inputrc ~/.inputrc
 }
 
-_setup_files()
+_setup_aliases()
 {
     # Local aliases - ignored by git
-    local local_aliases_path="$SHELL_SETUP_PATH/shell/configuration/local_aliases.sh"
-    local dynamic_alias_path="$SHELL_SETUP_PATH/scripts/dynamic_alias/.dynamic_alias_data.sh"
+    local local_aliases_path="$SHELL_SETUP_CONFIGURATION_PATH/local_aliases.sh"
+    local dynamic_alias_path="$SHELL_SETUP_SCRIPTS_PATH/dynamic_alias/.dynamic_alias_data.sh"
 
     touch "$local_aliases_path"
-
     if [[ $? -ne 0 ]]; then
         return 1
     fi
 
-    # Dynamic alias initial data
+    # Dynamic alias database initialization
     local content=""
     content="${content}home /home/$USER"$'\n'
     content="${content}shell_setup $SHELL_SETUP_PATH"$'\n'
-    content="${content}vim $SHELL_SETUP_PATH/shell_setup/vim"$'\n'
+    content="${content}scripts $SHELL_SETUP_SCRIPTS_PATH"$'\n'
 
     echo "${content}" > $dynamic_alias_path
 
@@ -53,14 +54,37 @@ _setup_files()
     fi
 }
 
+_setup_files()
+{
+    local envvars_path="$SHELL_SETUP_CONFIGURATION_PATH/envvars.sh"
+
+    if [[ ! -e "$envvars_path" ]]; then
+        touch "$envvars_path"
+    fi
+
+    local content="SHELL_SETUP_SCRIPTS_PATH=$SHELL_SETUP_SCRIPTS_PATH"
+
+    # Only append if the exact line doesn't already exist
+    if ! grep -Fxq "$content" "$envvars_path"; then
+        echo "$content" >> "$envvars_path"
+    fi
+}
+
 _reset_shell()
 {
     rm -rf ".shell_setup_done.sh"
     _setup_links
-    result=$(_setup_files)
-    if [[ -n "$result" ]]; then
+
+    _setup_files
+    if [[ $? -ne 0 ]]; then
         return 1
     fi
+
+    _setup_aliases
+    if [[ $? -ne 0 ]]; then
+        return 1
+    fi
+
     touch ".shell_setup_done.sh"
     return 0
 }
@@ -85,4 +109,6 @@ _setup_shell()
     esac
 }
 #####################################MAIN######################################
+export SHELL_SETUP_SCRIPTS_PATH="${SHELL_SETUP_PATH}/scripts"
+
 _setup_shell

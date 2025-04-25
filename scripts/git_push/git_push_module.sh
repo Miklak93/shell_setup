@@ -23,9 +23,9 @@ _git_push()
     local cmd="$(_get_command ${1})"
     if [[ $? -ne 0 ]]; then
         echo "git-push: Error: ${cmd}"
-        return 1
+    else
+        eval "${cmd}"
     fi
-    eval "${cmd}"
 }
 
 #################################AUTOCOMPLETION#################################

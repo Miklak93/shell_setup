@@ -5,7 +5,7 @@
 ################################################################################
 
 # Source the module
-source "$SCRIPTS_PATH/dynamic_alias/dynamic_alias_module.sh"
+source "$SHELL_SETUP_SCRIPTS_PATH/dynamic_alias/dynamic_alias_module.sh"
 
 # Define the alias
 alias da='_dynamic_alias'

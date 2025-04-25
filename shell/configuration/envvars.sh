@@ -1,4 +1,1 @@
-REPO_PATH="/repo/$USER"
-SCRIPTS_PATH="$REPO_PATH/shell_setup/scripts/"
-
-export PATH=$SCRIPTS_PATH:$PATH
+SHELL_SETUP_SCRIPTS_PATH=/repo/mikolaj/shell_setup/scripts

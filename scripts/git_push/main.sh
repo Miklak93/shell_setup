@@ -5,7 +5,7 @@
 ################################################################################
 
 # Source the module
-source "$SCRIPTS_PATH/git_push/git_push_module.sh"
+source "$SHELL_SETUP_SCRIPTS_PATH/git_push/git_push_module.sh"
 
 # Define the alias
 alias git-push='_git_push'

@@ -6,7 +6,7 @@
 ################################################################################
 
 # Source the module
-source "$SCRIPTS_PATH/up_directory/up_directory_module.sh"
+source "$SHELL_SETUP_SCRIPTS_PATH/up_directory/up_directory_module.sh"
 
 # Define the alias
 alias upd='_up_directory'
