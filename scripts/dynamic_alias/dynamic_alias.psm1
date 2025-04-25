@@ -145,5 +145,5 @@ Register-ArgumentCompleter -CommandName Invoke-DynamicAlias -ParameterName Short
     }
 }
 
-#####################################ALIASES####################################
-Set-Alias -Name da -Value Invoke-DynamicAlias
+#####################################EXPORT#####################################
+Export-ModuleMember -Function Invoke-DynamicAlias

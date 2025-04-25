@@ -31,5 +31,5 @@ Register-ArgumentCompleter -CommandName Invoke-GitPush -ParameterName Target -Sc
     }
 }
 
-#####################################ALIASES####################################
-Set-Alias -Name git-push -Value Invoke-GitPush
+#####################################EXPORT#####################################
+Export-ModuleMember -Function Invoke-GitPush

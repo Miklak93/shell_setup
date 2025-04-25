@@ -35,5 +35,5 @@ Register-ArgumentCompleter -CommandName Invoke-UpDirectory -ParameterName Target
     }
 }
 
-#####################################ALIASES####################################
-Set-Alias -Name upd -Value Invoke-UpDirectory
+#####################################EXPORT#####################################
+Export-ModuleMember -Function Invoke-UpDirectory

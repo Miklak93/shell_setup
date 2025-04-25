@@ -23,7 +23,6 @@ _create_links()
 
 _create_files()
 {
-
     _create_proj_dir
     touch /repo/$USER/shell_setup/shell/configuration/local_aliases.sh
     _fill_dynamic_alias_data

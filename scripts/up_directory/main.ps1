@@ -5,3 +5,6 @@
 
 # Import the module
 Import-Module "$env:ScriptsPath\up_directory\up_directory.psm1"
+
+# Define the alias
+Set-Alias -Name upd -Value Invoke-UpDirectory
