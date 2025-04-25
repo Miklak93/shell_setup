@@ -87,7 +87,7 @@ function Invoke-DynamicAlias
         [switch]$AddAlias,
         [switch]$RemoveAlias,
         [switch]$ApplyAlias,
-        [switch]$GetAliass,
+        [switch]$GetAliases,
         [string]$ShortName
     )
 
@@ -97,7 +97,7 @@ function Invoke-DynamicAlias
     elseif ($RemoveAlias) { 
         Remove-DynamicAlias $ShortName
     }
-    elseif ($GetAliass) {
+    elseif ($GetAliases) {
         Get-DynamicAliases
     }
     else {

@@ -1,11 +1,12 @@
 # PowerShell script to set up symlinks, profile, aliases, and environment variables
 
 # Define paths based on the user's environment
-$ShellSetupPath = (Get-Item -LiteralPath $PSScriptRoot).Parent.Parent.Parent
+$ShellSetupPath = (Get-Item -LiteralPath $PSScriptRoot).Parent.Parent.FullName
 $ShellSetupVimPath = "$ShellSetupPath\vim"
 $ShellSetupScriptsPath = "$ShellSetupPath\scripts"
 $ShellSetupProfilesPath = "$ShellSetupPath\shell"
 $ShellSetupConfigurationPath = "$ShellSetupProfilesPath\configuration"
+$ShellSetupDonePath = ".shell_setup_done.ps1"
 
 # Function to create symlinks for Vim
 function Set-Link {
@@ -21,8 +22,47 @@ function Set-Link {
 
 # Set up the Vim links
 function Set-Links {
-    Set-Link -Source "$ShellSetupVimPath\.vim" -Destination "$env:USERPROFILE\.vim"
-    Set-Link -Source "$ShellSetupVimPath\.vimrc" -Destination "$env:USERPROFILE\.vimrc"
+    $vimSourcePath = "$ShellSetupVimPath\.vim"
+    $vimrcSourcePath = "$ShellSetupVimPath\.vimrc"
+
+    # Check if the files exist before creating symlinks
+    if (Test-Path $vimSourcePath) {
+        Set-Link -Source $vimSourcePath -Destination "$env:USERPROFILE\.vim"
+    } else {
+        Write-Host "Vim source file not found: $vimSourcePath"
+    }
+
+    if (Test-Path $vimrcSourcePath) {
+        Set-Link -Source $vimrcSourcePath -Destination "$env:USERPROFILE\.vimrc"
+    } else {
+        Write-Host "Vimrc source file not found: $vimrcSourcePath"
+    }
+}
+
+# Set up the environment variables and profile configurations
+function Set-Files {
+    $EnvVarsPath = "$ShellSetupConfigurationPath\envvars.ps1"
+    $Content = "`$env:ScriptsPath = '$ShellSetupScriptsPath'"
+
+    # Check if the file exists
+    if (Test-Path $EnvVarsPath) {
+        # Read the content of the file
+        $ExistingContent = Get-Content -Path $EnvVarsPath -Raw
+
+        # Add as first line
+        if (-not $ExistingContent) {
+            Add-Content -Path $EnvVarsPath -Value "$Content" -Force
+        }
+        
+        # Add as next line
+        if ($ExistingContent -notmatch [regex]::Escape($Content)) {
+            Add-Content -Path $EnvVarsPath -Value "`r`n$Content" -Force
+        }
+    }
+    else {
+        # If the file doesn't exist, create it and add the content
+        Set-Content -Path $EnvVarsPath -Value $Content -Force
+    }
 }
 
 # Set up aliases and dynamic alias data
@@ -30,36 +70,32 @@ function Set-Aliases {
     $LocalAliasesPath = "$ShellSetupConfigurationPath\local_aliases.ps1"
     $DynamicAliasPath = "$ShellSetupScriptsPath\dynamic_alias\.dynamic_alias_data.ps1"
 
+    if (-not (Test-Path $LocalAliasesPath)) {
+        New-Item -ItemType File -Path $LocalAliasesPath
+    }
+
     # Initialize dynamic alias data
     $Content = @"
-home = 'C:\Users\$env:UserName'
-shell_setup = '$ShellSetupPath'
-scripts = '$ShellSetupScriptsPath'
+home C:\Users\$env:UserName
+shell_setup $ShellSetupPath
+scripts $ShellSetupScriptsPath
 "@
-    Set-Content -Path $DynamicAliasPath -Value $Content -Force
-}
 
-# Set up the environment variables and profile configurations
-function Set-Files {
-    $EnvVarsPath = "$ShellSetupConfigurationPath\envvars.ps1"
-
-    $Content = "\$env::ScriptsPath = '$ShellSetupScriptsPath'"
-
-    # Check if the content already exists, otherwise add it
-    if (-not (Select-String -Pattern [regex]::Escape($Content) -Path $EnvVarsPath)) {
-        Add-Content -Path $EnvVarsPath -Value $Content -Force
+    # Ensure the directory exists before creating the file
+    if (-not (Test-Path (Split-Path $DynamicAliasPath))) {
+        New-Item -ItemType File -Path $DynamicAliasPath
     }
+    Set-Content -Path $DynamicAliasPath -Value $Content -Force
 }
 
 # Set up the profile by appending the profile.ps1 reference
 function Set-Profile {
-    $RepositoryProfilePath = "$ShellSetupProfilesPath\profile1.ps1"
+    $RepositoryProfilePath = "$ShellSetupProfilesPath\profile.ps1"
 
     # Define the content to add to the profile
     $ProfileContent = @"
-\$RepositoryProfilePath = '$RepositoryProfilePath'
-
-if (Test-Path \$RepositoryProfilePath) { . \$RepositoryProfilePath }
+`$RepositoryProfilePath = '$RepositoryProfilePath'
+if (Test-Path `$RepositoryProfilePath) { . `$RepositoryProfilePath }
 "@
 
     # If the profile exists, modify it, otherwise create a new one
@@ -93,23 +129,21 @@ function Reset-Shell {
 
 # Reset the shell setup by cleaning up files and re-running the setup functions
 function Set-Shell {
-    $ShellSetupDonePath = ".shell_setup_done.ps1"
-
     # Prompt the user only if setup has not been done already
-    if (-not (Test-Path $ShellSetupDonePath)) {
+    $doReset = "Y"
+    if (Test-Path $ShellSetupDonePath) {
         $doReset = Read-Host "Shell is already set up - Do you really want to reset settings? [Y/N]"
-        if ($doReset -match '^[Yy]$') {
-            Reset-Shell
-            Write-Host "Done!"
-        }
-        elseif ($doReset -match '^[Nn]$') {
-            Write-Host "Shell has not been reset!"
-        }
-        else {
-            Write-Host "Command not recognized!"
-        }
-    } else {
-        Write-Host "Shell setup has already been completed."
+    }
+
+    if ($doReset -match '^[Yy]$') {
+        Reset-Shell
+        Write-Host "Done!"
+    }
+    elseif ($doReset -match '^[Nn]$') {
+        Write-Host "Shell has not been reset!"
+    }
+    else {
+        Write-Host "Command not recognized!"
     }
 }
 
