@@ -32,7 +32,6 @@ _fill_dynamic_alias_data()
 {
     local content=$'add-record\nremove-record\nlist-records\n\n'
     content="${content}"$'home /home/$USER\n'
-    content="${content}"$'proj /proj\n'
     content="${content}"$'repo /repo/$USER\n'
     content="${content}"$'shell_setup /repo/$USER/shell_setup\n'
     content="${content}"$'vim /repo/$USER/shell_setup/vim'

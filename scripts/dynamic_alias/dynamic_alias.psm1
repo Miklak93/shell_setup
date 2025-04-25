@@ -84,20 +84,20 @@ function Get-DynamicAliases
 function Invoke-DynamicAlias
 {
     param(
-        [switch]$AddRecord,
-        [switch]$RemoveRecord,
-        [switch]$ApplyRecord,
-        [switch]$GetRecords,
+        [switch]$AddAlias,
+        [switch]$RemoveAlias,
+        [switch]$ApplyAlias,
+        [switch]$GetAliass,
         [string]$ShortName
     )
 
-    if ($AddRecord) { 
+    if ($AddAlias) { 
         Add-DynamicAlias $ShortName (Get-Location).Path
     }
-    elseif ($RemoveRecord) { 
+    elseif ($RemoveAlias) { 
         Remove-DynamicAlias $ShortName
     }
-    elseif ($GetRecords) {
+    elseif ($GetAliass) {
         Get-DynamicAliases
     }
     else {
@@ -111,10 +111,10 @@ Register-ArgumentCompleter -CommandName Invoke-DynamicAlias -ParameterName Short
 
     # Define static actions
     $staticOptions = @(
-        '-AddRecord',
-        '-RemoveRecord',
-        '-GetRecords',
-        '-ApplyRecord'
+        '-AddAlias',
+        '-RemoveAlias',
+        '-GetAliases',
+        '-ApplyAlias'
     )
 
     # Get provided arguments
@@ -128,10 +128,10 @@ Register-ArgumentCompleter -CommandName Invoke-DynamicAlias -ParameterName Short
         $results = $staticOptions + $dynamicOptions
     }
     # Specific switch: show only aliases
-    elseif ($providedSwitch -in ('-ApplyRecord', '-RemoveRecord')) {
+    elseif ($providedSwitch -in ('-ApplyAlias', '-RemoveAlias')) {
         $results = $dynamicOptions
     }
-    # AddRecord and GetRecords don’t need shortName
+    # AddAlias and GetAliass don’t need shortName
     else {
         $results = @()
     }
