@@ -3,12 +3,12 @@
 #Script argument: None
 #####################################FUNCTIONS###################################
 _get_directory_short_names() {
-    echo "$(awk '{print $1}' $BASH_SCRIPTS_PATH/directory_navigator/.directory_navigator_data)"
+    echo "$(awk '{print $1}' $BASH_SCRIPTS_PATH/dynamic_alias/.dynamic_alias_data)"
 }
 
 _expand_short_name() {
     local directory_short_name="$1"
-    echo "$(grep -wE "^$directory_short_name" $BASH_SCRIPTS_PATH/directory_navigator/.directory_navigator_data | awk '{print $2}')"
+    echo "$(grep -wE "^$directory_short_name" $BASH_SCRIPTS_PATH/dynamic_alias/.dynamic_alias_data | awk '{print $2}')"
 }
 
 _get_full_path() {
@@ -38,7 +38,7 @@ _get_possible_words() {
     echo "${possible_words[@]}"
 }
 
-_directory_navigator_autocompletion() {
+_dynamic_alias_autocompletion() {
     # ${COMP_WORDS[0]} means "dn"
     local current_word="${COMP_WORDS[COMP_CWORD]}"
     # Remove current (unfinished) word from the list of arguments passed ahead
@@ -50,4 +50,4 @@ _directory_navigator_autocompletion() {
     return 0
 }
 
-complete -o nospace -F _directory_navigator_autocompletion dn
+complete -o nospace -F _dynamic_alias_autocompletion da

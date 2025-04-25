@@ -26,10 +26,10 @@ _create_files()
 
     _create_proj_dir
     touch /repo/$USER/shell_setup/bash/bashrc/local_aliases.sh
-    _fill_directory_navigator_data
+    _fill_dynamic_alias_data
 }
 
-_fill_directory_navigator_data()
+_fill_dynamic_alias_data()
 {
     local content=$'add-record\nremove-record\nlist-records\n\n'
     content="${content}"$'bashrc /repo/$USER/shell_setup/bash/bashrc\n'
@@ -39,7 +39,7 @@ _fill_directory_navigator_data()
     content="${content}"$'shell_setup /repo/$USER/shell_setup\n'
     content="${content}"$'vim /repo/$USER/shell_setup/vim'
 
-    echo "${content}" > /repo/$USER/shell_setup/scripts/bash/app/directory_navigator/.directory_navigator_data
+    echo "${content}" > /repo/$USER/shell_setup/scripts/bash/app/dynamic_alias/.dynamic_alias_data
 }
 
 _has_been_reset()

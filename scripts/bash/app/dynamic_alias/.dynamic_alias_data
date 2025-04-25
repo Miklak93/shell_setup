@@ -1,0 +1,10 @@
+add-record
+remove-record
+list-records
+
+bashrc /repo/$USER/shell_setup/bash/bashrc
+home /home/$USER
+proj /proj
+repo /repo/$USER
+shell_setup /repo/$USER/shell_setup
+vim /repo/$USER/shell_setup/vim

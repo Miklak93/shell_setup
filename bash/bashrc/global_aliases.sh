@@ -7,7 +7,7 @@ alias push_on_draft='git push origin HEAD:refs/drafts/master'
 alias push_on_master='git push origin HEAD:refs/for/master'
 
 #SCRIPTS - scripts variable is set in envvars
-alias dn='. $BASH_SCRIPTS_PATH/directory_navigator/directory_navigator.sh'
+alias da='. $BASH_SCRIPTS_PATH/dynamic_alias/dynamic_alias.sh'
 alias git-push='. $BASH_SCRIPTS_PATH/git_push/git_push.sh'
 alias prompt-title='. $BASH_SCRIPTS_PATH/prompt_title/prompt_title.sh'
 alias run-after='. $BASH_SCRIPTS_PATH/run_after/run_after.sh'
