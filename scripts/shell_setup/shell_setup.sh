@@ -109,6 +109,4 @@ _setup_shell()
     esac
 }
 #####################################MAIN######################################
-export SHELL_SETUP_SCRIPTS_PATH="${SHELL_SETUP_PATH}/scripts"
-
 _setup_shell
