@@ -26,8 +26,23 @@ _set_links()
 {
     _set_link $SHELL_SETUP_VIM_PATH/.vim ~/.vim
     _set_link $SHELL_SETUP_VIM_PATH/.vimrc ~/.vimrc
-    _set_link $SHELL_SETUP_PROFILES_PATH/.bashrc ~/.bashrc
     _set_link $SHELL_SETUP_PROFILES_PATH/.inputrc ~/.inputrc
+}
+
+_set_files()
+{
+    local envvars_path="$SHELL_SETUP_CONFIGURATION_PATH/envvars.sh"
+
+    if [[ ! -e "$envvars_path" ]]; then
+        touch "$envvars_path"
+    fi
+
+    local content="SHELL_SETUP_SCRIPTS_PATH=$SHELL_SETUP_SCRIPTS_PATH"
+
+    # Only append if the exact line doesn't already exist
+    if ! grep -Fxq "$content" "$envvars_path"; then
+        echo "$content" >> "$envvars_path"
+    fi
 }
 
 _set_aliases()
@@ -54,19 +69,33 @@ _set_aliases()
     fi
 }
 
-_set_files()
+_set_profile()
 {
-    local envvars_path="$SHELL_SETUP_CONFIGURATION_PATH/envvars.sh"
+    local profile="$SHELL_SETUP_PROFILES_PATH/profile.sh"
+    local bashrc="$HOME/.bashrc"
+    local profile_content="if [[ -f $profile ]]; then source $profile; fi"
 
-    if [[ ! -e "$envvars_path" ]]; then
-        touch "$envvars_path"
-    fi
+    if [[ -f "$bashrc" ]]; then
+        # Read current content
+        local bashrc_content
+        bashrc_content=$(<"$bashrc")
 
-    local content="SHELL_SETUP_SCRIPTS_PATH=$SHELL_SETUP_SCRIPTS_PATH"
+        # Remove any existing matching line
+        bashrc_content=$(printf "%s\n" "$bashrc_content" | grep -vF "$profile_content")
 
-    # Only append if the exact line doesn't already exist
-    if ! grep -Fxq "$content" "$envvars_path"; then
-        echo "$content" >> "$envvars_path"
+        # If the .bashrc file is empty, append as a first line
+        if [[ -z "$bashrc_content" ]]; then
+            bashrc_content="$profile_content"
+        # Otherwise in the next line
+        else
+            bashrc_content="$bashrc_content"$'\n'"$profile_content"
+        fi
+
+        # Write it back
+        printf "%s\n" "$bashrc_content" > "$bashrc"
+    else
+        # Create new .bashrc with the content
+        printf "%s\n" "$profile_content" > "$bashrc"
     fi
 }
 
@@ -81,6 +110,11 @@ _reset_shell()
     fi
 
     _set_aliases
+    if [[ $? -ne 0 ]]; then
+        return 1
+    fi
+
+    _set_profile
     if [[ $? -ne 0 ]]; then
         return 1
     fi

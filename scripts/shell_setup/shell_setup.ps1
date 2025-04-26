@@ -29,13 +29,13 @@ function Set-Links {
     if (Test-Path $vimSourcePath) {
         Set-Link -Source $vimSourcePath -Destination "$env:USERPROFILE\.vim"
     } else {
-        Write-Host "Vim source file not found: $vimSourcePath"
+        throw "Vim source file not found: $vimSourcePath"
     }
 
     if (Test-Path $vimrcSourcePath) {
         Set-Link -Source $vimrcSourcePath -Destination "$env:USERPROFILE\.vimrc"
     } else {
-        Write-Host "Vimrc source file not found: $vimrcSourcePath"
+        throw "Vimrc source file not found: $vimrcSourcePath"
     }
 }
 
@@ -119,6 +119,8 @@ if (Test-Path `$RepositoryProfilePath) { . `$RepositoryProfilePath }
 }
 
 function Reset-Shell {
+    Remove-Item -Path $ShellSetupDonePath -ItemType File -Force
+
     Set-Links
     Set-Files
     Set-Aliases
