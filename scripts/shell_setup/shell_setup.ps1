@@ -93,10 +93,7 @@ function Set-Profile {
     $RepositoryProfilePath = "$ShellSetupProfilesPath\profile.ps1"
 
     # Define the content to add to the profile
-    $ProfileContent = @"
-`$RepositoryProfilePath = '$RepositoryProfilePath'
-if (Test-Path `$RepositoryProfilePath) { . `$RepositoryProfilePath }
-"@
+    $ProfileContent = "if (Test-Path $RepositoryProfilePath) { . $RepositoryProfilePath }"
 
     # If the profile exists, modify it, otherwise create a new one
     if (Test-Path $PROFILE) {
@@ -119,7 +116,7 @@ if (Test-Path `$RepositoryProfilePath) { . `$RepositoryProfilePath }
 }
 
 function Reset-Shell {
-    Remove-Item -Path $ShellSetupDonePath -ItemType File -Force
+    Remove-Item -Path $ShellSetupDonePath -Force
 
     Set-Links
     Set-Files
