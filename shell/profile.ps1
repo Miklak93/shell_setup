@@ -1,5 +1,5 @@
 # Create the shortcut for environment resources
-$ProfileConfigDir = "C:\Users\$env:UserName\Repo\shell_setup\shell\configuration"
+$ProfileConfigDir = "$((Get-Item -LiteralPath $PSScriptRoot).FullName)\configuration"
 
 # Import utility functions module
 Import-Module "$ProfileConfigDir\utils.psm1"

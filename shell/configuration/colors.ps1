@@ -4,8 +4,8 @@ $host.UI.RawUI.BackgroundColor = "Black"
 # Set the text color (foreground) to white
 $host.UI.RawUI.ForegroundColor = "White"     
 
-# Apply the color changes
-Clear-Host  # Clear the terminal to apply the new colors
+# Apply the color changes (uncomment if needed)
+# Clear-Host  # Clear the terminal to apply the new colors
 
 # Customizing the prompt to display the header
 function prompt
