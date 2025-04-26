@@ -1,4 +1,4 @@
-$DynamicAliasData = "$env:ScriptsPath\dynamic_alias\.dynamic_alias_data.ps1"
+$DynamicAliasData = "$env:ShellSetupScriptsPath\dynamic_alias\.dynamic_alias_data.ps1"
 
 ####################################FUNCTIONS###################################
 function Get-DirectoryShortNames

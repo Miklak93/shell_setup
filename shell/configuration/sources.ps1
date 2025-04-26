@@ -1,5 +1,5 @@
 # Call the function to source the scripts
-$scriptsPath = $env:ScriptsPath
+$scriptsPath = $env:ShellSetupScriptsPath
 
 # Ensure the path is valid
 if (-not (Test-Path $scriptsPath))

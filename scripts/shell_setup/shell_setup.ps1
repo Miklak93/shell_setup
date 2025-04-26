@@ -42,7 +42,7 @@ function Set-Links {
 # Set up the environment variables and profile configurations
 function Set-Files {
     $EnvVarsPath = "$ShellSetupConfigurationPath\envvars.ps1"
-    $Content = "`$env:ScriptsPath = '$ShellSetupScriptsPath'"
+    $Content = "`$env:ShellSetupScriptsPath = '$ShellSetupScriptsPath'"
 
     # Check if the file exists
     if (Test-Path $EnvVarsPath) {
