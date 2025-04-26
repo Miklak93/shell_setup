@@ -1,5 +1,5 @@
 # Create the shortcut for environment resources
-BASHRC_CONFIG_DIR="/repo/$USER/shell_setup/shell/configuration"
+BASHRC_CONFIG_DIR=""$(dirname "$(realpath "${BASH_SOURCE[0]}")")/configuration""
 
 # Set 256 colors in terminal - use only when needed
 #. /etc/profile.d/256term.sh
