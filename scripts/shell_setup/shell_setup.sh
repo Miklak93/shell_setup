@@ -8,7 +8,7 @@ SHELL_SETUP_SCRIPTS_PATH="$SHELL_SETUP_PATH/scripts"
 SHELL_SETUP_PROFILES_PATH="$SHELL_SETUP_PATH/shell"
 SHELL_SETUP_CONFIGURATION_PATH="$SHELL_SETUP_PROFILES_PATH/configuration"
 
-_setup_link() {
+_set_link() {
     local source=$1
     local destination=$2
 
@@ -22,15 +22,15 @@ _setup_link() {
     ln -sf "$source" "$destination"
 }
 
-_setup_links()
+_set_links()
 {
-    _setup_link $SHELL_SETUP_VIM_PATH/.vim ~/.vim
-    _setup_link $SHELL_SETUP_VIM_PATH/.vimrc ~/.vimrc
-    _setup_link $SHELL_SETUP_PROFILES_PATH/.bashrc ~/.bashrc
-    _setup_link $SHELL_SETUP_PROFILES_PATH/.inputrc ~/.inputrc
+    _set_link $SHELL_SETUP_VIM_PATH/.vim ~/.vim
+    _set_link $SHELL_SETUP_VIM_PATH/.vimrc ~/.vimrc
+    _set_link $SHELL_SETUP_PROFILES_PATH/.bashrc ~/.bashrc
+    _set_link $SHELL_SETUP_PROFILES_PATH/.inputrc ~/.inputrc
 }
 
-_setup_aliases()
+_set_aliases()
 {
     # Local aliases - ignored by git
     local local_aliases_path="$SHELL_SETUP_CONFIGURATION_PATH/local_aliases.sh"
@@ -54,7 +54,7 @@ _setup_aliases()
     fi
 }
 
-_setup_files()
+_set_files()
 {
     local envvars_path="$SHELL_SETUP_CONFIGURATION_PATH/envvars.sh"
 
@@ -73,14 +73,14 @@ _setup_files()
 _reset_shell()
 {
     rm -rf ".shell_setup_done.sh"
-    _setup_links
+    _set_links
 
-    _setup_files
+    _set_files
     if [[ $? -ne 0 ]]; then
         return 1
     fi
 
-    _setup_aliases
+    _set_aliases
     if [[ $? -ne 0 ]]; then
         return 1
     fi
@@ -89,7 +89,7 @@ _reset_shell()
     return 0
 }
 
-_setup_shell()
+_set_shell()
 {
     local do_reset="Y"
     if [[ -f ".shell_setup_done.sh" ]]; then
@@ -109,4 +109,4 @@ _setup_shell()
     esac
 }
 #####################################MAIN######################################
-_setup_shell
+_set_shell
