@@ -1,106 +1,256 @@
 #!/bin/bash
 
 ################################### CONFIG #####################################
-DATA="$SHELL_SETUP_SCRIPTS_PATH/dynamic_alias/.dynamic_alias_data.sh"
+# Database path
+DATA_PATH="$SHELL_SETUP_SCRIPTS_PATH/dynamic_alias/.dynamic_alias_data.sh"
+
+# Commands
+ADD_COMMAND="--add_alias"
+APPLY_COMMAND="--apply_alias"
+DELETE_COMMAND="--delete_alias"
+GET_COMMAND="--get_aliases"
+
+ALL_COMMANDS=("$ADD_COMMAND" "$APPLY_COMMAND" "$DELETE_COMMAND" "$GET_COMMAND")
+DYNAMIC_COMMANDS=("$ADD_COMMAND" "$APPLY_COMMAND" "$DELETE_COMMAND")
+
+# Default values
+TRUE="true"
+FALSE="false"
+
+CD_EXECUTABLE="cd"
+CAT_EXECUTABLE="cat"
+EXECUTABLES_PATH="/usr/bin"
+
+ERROR="Error dn"
+SUCCESS="Success dn"
 
 ################################# CORE FUNCTIONS ###############################
-
-_get_directory_short_names() {
-    awk '{print $1}' "$DATA"
-}
-
-_expand_short_name() {
-    local directory_short_name="$1"
-    grep -wE "^$directory_short_name" "$DATA" | awk '{print $2}'
-}
-
-_build_full_path() {
-    local expanded_short_name
-    expanded_short_name="$(eval echo "$(_expand_short_name "$1")")"
-    shift
-    local directory_suffix="${*/ /}"  # Remove spaces
-    echo "$expanded_short_name/$directory_suffix"
-}
-
-_add_dynamic_alias() {
-    local directory_short_name="$1"
-    local directory_full_path="$2"
-
-    if [[ -z "$directory_short_name" ]]; then
-        directory_short_name=$(basename "$directory_full_path")
+_parse_args()
+{
+    if [[ "$1" == --* ]] && [[ $(_is_any_of "$1" "${ALL_COMMANDS[@]}") == "$FALSE" ]]; then
+        echo "$ERROR: Unknown command: $1." >&2
+        return
     fi
 
-    echo "$directory_short_name $directory_full_path" >> "$DATA"
-}
-
-_remove_dynamic_alias() {
-    local directory_short_name="$1"
-    sed -i "/^${directory_short_name}[[:space:]]/d" "$DATA"
-}
-
-_get_dynamic_aliases() {
-    cat "$DATA"
-}
-
-_apply_dynamic_alias() {
-    local short_name="$1"
-    local target_path="$(_expand_short_name "$short_name")"
-    if [[ -d "$target_path" ]]; then
-        cd "$target_path" || echo "Failed to change directory"
-    else
-        echo "dynamic_alias: Path does not exist: $target_path"
-    fi
-}
-
-_dynamic_alias() {
-    local request="$1"
-    shift
-
-    case "$request" in
-        --add_alias)
-            _add_dynamic_alias "$1" "$PWD";;
-        --remove_alias)
-            _remove_dynamic_alias "$1";;
-        --get_aliases)
-            _get_dynamic_aliases;;
-        --apply_alias)
-            _apply_dynamic_alias "$1";;
-        *)
-            local full_path="$(_build_full_path "$request" "$@")"
-            if [[ -d "$full_path" ]]; then
-                cd "$full_path"
+    case "$#" in
+        0)
+            echo "$ERROR: No arguments provided." >&2
+            ;;
+        1)
+            if [[ "$(_is_any_of "$1" "${DYNAMIC_COMMANDS[@]}")" == "$TRUE" ]]; then
+                echo "$ERROR: Cannot execute with command '$1' only. You need to provide an alias - see 'dn $GET_COMMAND'." >&2
+            elif [[ "$1" == "$GET_COMMAND" ]]; then
+                echo "$GET_COMMAND $CAT_EXECUTABLE"
             else
-                echo "Invalid alias or path: $full_path"
+                echo "$APPLY_COMMAND $1 $CD_EXECUTABLE"
+            fi
+            ;;
+        2)
+            if [[ "$(_is_any_of "$1" "${ALL_COMMANDS[@]}")" == "$TRUE" ]]; then
+                if [[ "$1" == "$ADD_COMMAND" ]]; then
+                    echo "$ADD_COMMAND $2"
+                elif [[ "$1" == "$GET_COMMAND" ]]; then
+                    echo "$GET_COMMAND $2"
+                else
+                    echo "$1 $2 $CD_EXECUTABLE"
+                fi
+            else
+                echo "$APPLY_COMMAND $1 $2"
+            fi
+            ;;
+        3)
+            if [[ "$(_is_any_of "$1" "${DYNAMIC_COMMANDS[@]}")" == "$TRUE" ]]; then
+                echo "$1 $2 $3"
+            elif [[ "$1" == "$GET_COMMAND" ]]; then
+                echo "$ERROR: $GET_COMMAND cannot have three arguments."
+            else
+                echo "$ERROR: Unknown command: $1." >&2
+            fi
+            ;;
+        *)
+            echo "$ERROR: $# arguments passed: $@."
+            ;;
+    esac
+}
+
+_is_any_of()
+{
+    local value="$1"
+    local options="${@:2}"
+
+    if [[ " ${options[*]} " == *" $value "* ]]; then
+        echo "$TRUE"
+    else
+        echo "$FALSE"
+    fi
+}
+
+_db_find()
+{
+    local key="$1"
+    local value="$(grep -wE "^$key" "$DATA_PATH" | awk '{print $2}')"
+
+    if [[ -z "$value" ]]; then
+        echo "$ERROR: There is no such key '$key' in the database."
+    else
+        echo "$value"
+    fi
+}
+
+_db_keys()
+{
+    cat "$DATA_PATH" | awk '{print $1}'
+}
+
+_add_alias()
+{
+    # Target may be simply the alias or full path - in such a case basename will be taken (i.e. target = /path/to/dir => alias = dir)
+    local target="$1"
+    local full_path="$2"
+    local alias="$(basename "$target")"
+
+    # If full_path is not provided, determine if it is valid file, directory or alias
+    if [[ -z "$full_path" ]]; then
+        # Valid file, directory or symlink
+        if [[ -e "$target" ]]; then
+            full_path="$target"
+        # Alias, so use current directory
+        else
+            full_path="$(pwd)"
+        fi
+    else
+        if [[ ! -e "$full_path" ]]; then
+            echo "$ERROR: '$full_path' no such file or directory."
+            return 1
+        fi
+    fi
+
+    local alias_path="$(realpath "$full_path")"
+    echo "$alias $alias_path" >> "$DATA_PATH"
+    echo "$SUCCESS: Entry {$alias => $alias_path} successfully added."
+}
+
+_apply_alias()
+{
+    # May be simply alias or alias/path/to/something
+    local target="$1"
+    local executable="$2"
+
+    local space_separated_target=$(echo "$target" | sed 's#\/# #g')
+    local alias="$(echo "$space_separated_target" | awk '{print $1}' )"
+
+    # Special case: if the $target starts with '/' keep leading '/'
+    if [[ "$target" == /* ]]; then
+        alias="/$alias"
+    fi
+
+    local alias_path="$(_db_find "$alias")"
+    if [[ "$alias_path" == "$ERROR"* ]]; then
+        echo "$alias_path" >&2
+        return 1
+    fi
+
+    local tail="$(echo "$space_separated_target" | awk '{ $1=""; print substr($0,2) }' | sed 's# #\/'#g)"
+    if [[ -z "$tail" ]]; then
+        $executable "$alias_path"
+    else
+        $executable "$alias_path/$tail"
+    fi
+}
+
+_delete_alias()
+{
+    local alias="$1"
+    local alias_path="$(_db_find "$alias")"
+    if [[ "$alias_path" == "$ERROR"* ]]; then
+        echo "$alias_path" >&2
+        return 1
+    fi
+
+    sed -i "/^${alias}[[:space:]]/d" "$DATA_PATH"
+    echo "$SUCCESS: Entry {$alias => $alias_path} successfully removed."
+}
+
+_get_aliases()
+{
+    local executable="$1"
+    $executable "$DATA_PATH"
+}
+
+_execute()
+{
+    local command="$1"
+    case "$command" in
+        "$ADD_COMMAND")
+            _add_alias "$2" "$3"
+            ;;
+        "$APPLY_COMMAND")
+            _apply_alias "$2" "$3"
+            ;;
+        "$DELETE_COMMAND")
+            _delete_alias "$2"
+            ;;
+        "$GET_COMMAND")
+            _get_aliases "$2"
+            ;;
+        *)
+            echo "$ERROR: Unknown command: $command." >&2
+            ;;
+    esac
+}
+
+_dynamic_alias()
+{
+    local args="$(_parse_args "$@")"
+    if [[ "$args" == "$ERROR"* ]]; then
+        echo "$args" >&2
+    else
+        _execute $args
+    fi
+}
+
+################################### AUTOCOMPLETE ###############################
+_get_options()
+{
+    local command="$1"
+    local current_word="$2"
+
+    case "$command" in
+        "$ADD_COMMAND")
+            COMPREPLY=()
+            ;;
+        "$APPLY_COMMAND" | "$DELETE_COMMAND")
+            COMPREPLY=($(compgen -W "$(_db_keys)" -- $current_word))
+            ;;
+        # $GET_COMMAND or alias is used
+        *)
+            # Only perform completion if the current word is not empty
+            if [[ -n "$current_word" ]]; then
+                COMPREPLY=( $(compgen -c "$current_word" "$EXECUTABLES_PATH") )
+            else
+                # If nothing is typed, do not perform any search (speed up)
+                COMPREPLY=()
             fi
             ;;
     esac
 }
 
-################################### AUTOCOMPLETE ###############################
-_dynamic_alias_autocompletion() {
-    local cur prev
-    cur="${COMP_WORDS[COMP_CWORD]}"
-    prev="${COMP_WORDS[COMP_CWORD-1]}"
+_dynamic_alias_autocompletion()
+{
+    local possible_options=("${ALL_COMMANDS[@]}" $(_db_keys))
 
-    local static_options="--add_alias --remove_alias --get_aliases --apply_alias"
-    local short_names="$(_get_directory_short_names)"
-    local selected_switch=""
+    local current_word="${COMP_WORDS[COMP_CWORD]}"
+    local previous_word="${COMP_WORDS[COMP_CWORD-1]}"
+    local second_to_last_word="${COMP_WORDS[COMP_CWORD-2]}"
 
-    for word in "${COMP_WORDS[@]:1}"; do
-        if [[ "$word" == --* ]]; then
-            selected_switch="$word"
-            break
-        fi
-    done
-
-    # 🛠 Fix: if typing any dash-prefixed string, use static options
-    if [[ "$cur" == "-"* ]]; then
-        COMPREPLY=( $(compgen -W "$static_options" -- "$cur") )
-    elif [[ -z "$selected_switch" ]]; then
-        COMPREPLY=( $(compgen -W "$static_options $short_names" -- "$cur") )
-    elif [[ "$selected_switch" == "--remove_alias" || "$selected_switch" == "--apply_alias" ]]; then
-        COMPREPLY=( $(compgen -W "$short_names" -- "$cur") )
+    # The special case and the only one with three arguments
+    if [[ "${second_to_last_word}" == "$APPLY_COMMAND" ]]; then
+        # Pass alias and already typing word
+        _get_options "$previous_word" "$current_word"
+    elif [[ " ${possible_options[*]} " == *" $previous_word "* ]]; then
+        _get_options "$previous_word" "$current_word"
     else
-        COMPREPLY=()
+        # Get all options
+        COMPREPLY=($(compgen -W "${possible_options[*]}" -- "$current_word"))
     fi
 }
