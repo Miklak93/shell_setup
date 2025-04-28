@@ -6,15 +6,6 @@
 # ======================================== FUNCTIONS ============================================= #
 # Helper functions
 # ================================================================================================ #
-
-# ========================================= ALIAS ================================================ #
-# Define the name of the command as it appears in the shell                                        #
-# ================================================================================================ #
-alias git-push="python3 $SHELL_SETUP_SCRIPTS_PATH/git_push/main.py"
-
-#===================================== AUTOCOMPLETION ============================================ #
-# Enable autocompletion for the command in the shell                               #
-# ================================================================================================ #
 _git_push_autocompletion()
 {
     COMPREPLY=()
@@ -25,4 +16,13 @@ _git_push_autocompletion()
     COMPREPLY=( $(compgen -W "${possible_words}" -- ${current_word}) )
     return 0
 }
+
+# ========================================= ALIAS ================================================ #
+# Define the name of the command as it appears in the shell                                        #
+# ================================================================================================ #
+alias git-push="python3 $SHELL_SETUP_SCRIPTS_PATH/git_push/main.py"
+
+#===================================== AUTOCOMPLETION ============================================ #
+# Enable autocompletion for the command in the shell                               #
+# ================================================================================================ #
 complete -o nospace -F _git_push_autocompletion git-push

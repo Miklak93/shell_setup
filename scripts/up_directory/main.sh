@@ -1,6 +1,7 @@
 #!/bin/bash
 # ======================================= INSTRUCTIONS =========================================== #
-# Script arguments: One of private, draft, master, main                                            #
+# Script argument: Name of directory where you wish to go. Script will use
+# backward counting, when your argument will be name of directory.
 # ================================================================================================ #
 
 # ======================================== FUNCTIONS ============================================= #
@@ -16,14 +17,6 @@ _up_directory()
     fi
 }
 
-# ========================================= ALIAS ================================================ #
-# Define the name of the command as it appears in the shell                                        #
-# ================================================================================================ #
-alias upd="_up_directory"
-
-#===================================== AUTOCOMPLETION ============================================ #
-# Enable autocompletion for the command in the shell                               #
-# ================================================================================================ #
 _up_directory_autocompletion()
 {
     COMPREPLY=()
@@ -39,4 +32,13 @@ _up_directory_autocompletion()
 
     return 0
 }
+
+# ========================================= ALIAS ================================================ #
+# Define the name of the command as it appears in the shell                                        #
+# ================================================================================================ #
+alias upd="_up_directory"
+
+#===================================== AUTOCOMPLETION ============================================ #
+# Enable autocompletion for the command in the shell                               #
+# ================================================================================================ #
 complete -o nospace -F _up_directory_autocompletion upd

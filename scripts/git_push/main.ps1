@@ -2,8 +2,8 @@
 # Script arguments: One of private, draft, master, main                                            #
 # ================================================================================================ #
 
-# ========================================= ALIAS ================================================ #
-# Define the name of the command as it appears in the shell                                        #
+# ======================================== FUNCTIONS ============================================= #
+# Helper functions
 # ================================================================================================ #
 function Invoke-GitPush {
     param (
@@ -12,6 +12,10 @@ function Invoke-GitPush {
 
     py "$env:ShellSetupScriptsPath\git_push\main.py" "$Branch"
 }
+
+# ========================================= ALIAS ================================================ #
+# Define the name of the command as it appears in the shell                                        #
+# ================================================================================================ #
 Set-Alias -Name git-push -Value Invoke-GitPush
 
 #===================================== AUTOCOMPLETION ============================================ #
