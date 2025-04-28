@@ -14,6 +14,6 @@ def parse_args() -> dict:
 def main():
     args = parse_args()
     subprocess.run(constants.commands[args.branch], shell=True, check=True)
-        
+
 if __name__ == "__main__":
     main()
