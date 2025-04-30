@@ -3,6 +3,10 @@
 # Script arguments: One of private, draft, master, main                                            #
 # ================================================================================================ #
 
+# ========================================= CONFIG ==========================================+==== #
+# Configuration variables
+# ================================================================================================ #
+
 # ======================================== FUNCTIONS ============================================= #
 # Helper functions
 # ================================================================================================ #
@@ -20,9 +24,9 @@ _git_push_autocompletion()
 # ========================================= ALIAS ================================================ #
 # Define the name of the command as it appears in the shell                                        #
 # ================================================================================================ #
-alias git-push="python3 $SHELL_SETUP_SCRIPTS_PATH/git_push/main.py"
+alias git-push="python3 "$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"/main.py"
 
 #===================================== AUTOCOMPLETION ============================================ #
-# Enable autocompletion for the command in the shell                               #
+# Enable autocompletion for the command in the shell                                               #
 # ================================================================================================ #
 complete -o nospace -F _git_push_autocompletion git-push

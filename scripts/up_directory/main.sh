@@ -4,12 +4,17 @@
 # backward counting, when your argument will be name of directory.
 # ================================================================================================ #
 
+# ========================================= CONFIG ==========================================+==== #
+# Configuration variables
+# ================================================================================================ #
+
 # ======================================== FUNCTIONS ============================================= #
 # Helper functions
 # ================================================================================================ #
 _up_directory()
 {
-    directory="$(python3 $SHELL_SETUP_SCRIPTS_PATH/up_directory/main.py "$1")"
+    local current_path="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+    local directory="$(python3 $current_path/main.py "$1")"
     if [[ "$directory" == "Error"* ]]; then
         printf "\033[0;31m$directory"
     else
@@ -39,6 +44,6 @@ _up_directory_autocompletion()
 alias upd="_up_directory"
 
 #===================================== AUTOCOMPLETION ============================================ #
-# Enable autocompletion for the command in the shell                               #
+# Enable autocompletion for the command in the shell                                               #
 # ================================================================================================ #
 complete -o nospace -F _up_directory_autocompletion upd

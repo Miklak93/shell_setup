@@ -1,0 +1,16 @@
+{
+    "Linux": {
+        "command": {
+            "echo": "echo",
+            "cat": "cat",
+            "cd": "cd"
+        }
+    },
+    "Windows": {
+        "command": {
+            "echo": "Write-Host",
+            "cat": "Get-Content",
+            "cd": "Set-Location"
+        }
+    }
+}
