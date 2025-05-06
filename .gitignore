@@ -9,7 +9,6 @@ shell/configuration/envvars.sh
 shell/configuration/envvars.ps1
 shell/configuration/local_aliases.sh
 shell/configuration/local_aliases.ps1
-scripts/dynamic_alias/.dynamic_alias_data.sh
-scripts/dynamic_alias/.dynamic_alias_data.ps1
+scripts/dynamic_alias/.database.json
 scripts/shell_setup/.shell_setup_done.sh
 scripts/shell_setup/.shell_setup_done.ps1

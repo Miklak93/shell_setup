@@ -12,22 +12,16 @@ def parse_args() -> dict:
     subparsers = parser.add_subparsers(dest="option", required=True)
 
     add_subparser = subparsers.add_parser(Option.add.value, help="Add a new alias to the database")
-    add_subparser.add_argument("-n", "--name", type=str, nargs="?", help="Alias name")
+    add_subparser.add_argument("name", type=str, nargs="?", help="Alias name")
     add_subparser.add_argument("-p", "--path", type=str, help="Alias path")
     add_subparser.add_argument("-f", "--force", action="store_true", default=False, help="Force overwrite an alias value")
 
     delete_subparser = subparsers.add_parser(Option.delete.value, help="Delete an alias from the database")
-    delete_subparser.add_argument("-n", "--name", type=str, help="Alias name")
+    delete_subparser.add_argument("name", type=str, nargs="?", help="Alias name")
 
     get_subparser = subparsers.add_parser(Option.get.value, help="Gets an alias value from the database")
-    get_subparser.add_argument("-n", "--name", type=str, help="Alias name")
-
-    list_subparser = subparsers.add_parser(Option.list.value, help="Run the specified executable on the alias database")
-    list_subparser.add_argument("-e", "--executable", type=str, default=None, help="Executable name")
-
-    use_subparser = subparsers.add_parser(Option.use.value, help="Run the specified executable on the given alias")
-    use_subparser.add_argument("-n", "--name", type=str, help="Alias name")
-    use_subparser.add_argument("-e", "--executable", type=str, default=None, help="Executable name")
+    get_subparser.add_argument("name", type=str, nargs="?", help="Alias name")
+    get_subparser.add_argument("-e", "--executable", type=str, default=None, help="Executable name")
 
     return parser.parse_args()
 
@@ -55,9 +49,7 @@ def main() -> str:
     mapping = {
         Option.add: command.Add(args),
         Option.delete: command.Delete(args),
-        Option.get: command.Get(args),
-        Option.list : command.List(args),
-        Option.use : command.Use(args)
+        Option.get: command.Get(args)
     }
     
     try:

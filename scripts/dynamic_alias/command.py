@@ -35,22 +35,10 @@ class Get:
         self.db = Db(Source.database)
 
     def __call__(self) -> ShellCommand:
-        return ShellCommand(self.args.shell_command["echo"], self.db.get(key=self.args.name).value()[1])
+        get_executable = lambda default_command: self.args.executable if self.args.executable else default_command
 
-class List:
-    def __init__(self, args: dict):
-        self.args = args
+        if not self.args.name:
+            return ShellCommand(get_executable(self.args.shell_command["cat"]), Source.database.value)
 
-    def __call__(self) -> ShellCommand:
-        executable = self.args.executable if self.args.executable else self.args.shell_command["cat"]
-        return ShellCommand(executable, Source.database.value)
-
-class Use:
-    def __init__(self, args: dict):
-        self.args = args
-        self.db = Db(Source.database)
-
-    def __call__(self) -> str:
         _, path = self.db.get(key=self.args.name).value()
-        executable = self.args.executable if self.args.executable else self.args.shell_command["cd"]
-        return ShellCommand(executable, path)
+        return ShellCommand(get_executable(self.args.shell_command["cd"]), path)
