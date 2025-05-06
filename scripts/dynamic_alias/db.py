@@ -45,8 +45,8 @@ class Db:
         with open(self.source, "w") as file:
             json.dump(self.database, file, indent=4)
 
-    def add(self, key: Any, value: Any, force: bool = False) -> DbResult:
-        if not force and (key in self.database):
+    def add(self, key: Any, value: Any) -> DbResult:
+        if key in self.database:
             raise DbError((key, self.database[key]), "Key already exists in the database")
 
         self.database[key] = value
@@ -67,3 +67,11 @@ class Db:
             return DbSuccess((key, self.database[key]), "Key exist in the database")
         except Exception as e:
             raise DbError(key, "Key does not exist in the database")
+
+    def update(self, key: Any, value: Any) -> DbResult:
+        if key not in self.database:
+            raise DbError(key, "Key does not exist in the database")
+
+        self.database[key] = value
+        self.__dump__()
+        return DbSuccess((key, value), "Entry successfully updated")

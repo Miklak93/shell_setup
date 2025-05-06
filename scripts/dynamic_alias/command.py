@@ -19,7 +19,13 @@ class Add:
     def __call__(self) -> DbResult:
         path = Path(self.args.path).expanduser().resolve(strict=False) if self.args.path else Path.cwd()
         alias = self.args.name if self.args.name else path.name
-        return self.db.add(key=alias, value=path.as_posix(), force=self.args.force)
+        try:
+            return self.db.add(key=alias, value=path.as_posix())
+        except Exception:
+            if not self.args.force:
+                raise
+
+            return self.db.update(key=alias, value=path.as_posix())
 
 class Delete:
     def __init__(self, args: dict):

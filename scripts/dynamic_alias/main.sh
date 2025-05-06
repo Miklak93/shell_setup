@@ -24,6 +24,8 @@ _dynamic_alias()
         eval "${result#Command: }"
     elif [[ "$result" == *"Error:"* ]]; then
         printf "\033[0;31m$result"
+    elif [[ "$result" == *"Success:"* ]]; then
+        printf "\033[0;32m$result"
     else
         echo "$result"
     fi
