@@ -6,6 +6,7 @@ class Option(Enum):
     add = "add"
     delete = "delete"
     get = "get"
+    use = "use"
 
 class Source(Enum):
     shell_config = Path(os.path.realpath(__file__)).parent / ".shell_config.json"

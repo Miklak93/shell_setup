@@ -41,11 +41,17 @@ class Get:
         self.db = Db(Source.database)
 
     def __call__(self) -> ShellCommand:
+        if self.args.name:
+            return ShellCommand(self.args.shell_command["echo"], self.db.get(self.args.name).value()[1])
+        return ShellCommand(self.args.shell_command["cat"], Source.database.value)
+
+class Use:
+    def __init__(self, args: dict):
+        self.args = args
+        self.db = Db(Source.database)
+
+    def __call__(self) -> ShellCommand:
         get_executable = lambda default_command: self.args.executable if self.args.executable else default_command
-
-        if not self.args.name:
-            return ShellCommand(get_executable(self.args.shell_command["cat"]), Source.database.value)
-
         try:
             # Try to treat the value like alias
             _, path = self.db.get(self.args.name).value()

@@ -68,7 +68,7 @@ _add_command_autocomplete()
     fi
 }
 
-_delete_command_autocomplete()
+_get_command_autocomplete()
 {
     local db="$1"
     local keys=($(_get_db_keys "$db"))
@@ -83,21 +83,22 @@ _delete_command_autocomplete()
     fi
 }
 
-_get_command_autocomplete()
+_use_command_autocomplete()
 {
     local db="$1"
+    local max_args="$2"
     # Do not change it to string!
     local keys=($(_get_db_keys "$db"))
     local current_word="${COMP_WORDS[COMP_CWORD]}"
 
-    # Suggest if we do not exceede current + 3 arguments (like "da get <alias> -e <current>") or
-    # when "-e" with option was not used
-    if [[ $COMP_CWORD -gt 4 || "${COMP_WORDS[COMP_CWORD-2]}" == "-e" ]]; then
+    # Suggest if we do not exceede current + 3 (2 when no "use" is provided) arguments
+    # (like "da (use) <alias> -e <current>") or when "-e" with option was not used
+    if [[ "$COMP_CWORD" -gt "$((max_args))" || "${COMP_WORDS[COMP_CWORD-2]}" == "-e" ]]; then
         COMPREPLY=()
     # If "-e" flag is used suggest exe files
     elif [[ "${COMP_WORDS[COMP_CWORD-1]}" == "-e" ]]; then
         _executables_autocomplete
-    elif [[ $COMP_CWORD -eq 2 ]]; then
+    elif [[ "$COMP_CWORD" -eq "$((max_args - 2))" ]]; then
         for key in "${keys[@]}"; do
             # If no key or only part of it is used suggest completion for them
             if [[ "$key" == "$current_word"* ]]; then
@@ -114,7 +115,7 @@ _get_command_autocomplete()
         # Having full path suggest files we may visit
         COMPREPLY=($(compgen -f -- "$current_word" ))
     # If -e has not been provided yet, suggest it
-    elif [[ "$COMP_CWORD" -le 3 || "${COMP_WORDS[COMP_CWORD-1]}" != "-e" ]]; then
+    elif [[ "$COMP_CWORD" -le "$((max_args - 1))" || "${COMP_WORDS[COMP_CWORD-1]}" != "-e" ]]; then
         COMPREPLY=($(compgen -W "-e" -- "$current_word"))
     fi
 }
@@ -123,12 +124,13 @@ _dynamic_alias_autocomplete()
 {
     local current_path="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
     local db="$current_path/.database.json"
+    local current_word="${COMP_WORDS[COMP_CWORD]}"
 
     # No option has been selected so far so suggest these options
-    if [[ "${COMP_WORDS[COMP_CWORD-1]}" == "da" ]]; then
-        local static_options=("add" "delete" "get")
-        local current_word="${COMP_WORDS[COMP_CWORD]}"
-        COMPREPLY=($(compgen -W "${static_options[*]}" -- "$current_word"))
+    if [[ "$COMP_CWORD" -eq 1 && -z "$current_word" ]]; then
+        local static_options=("add" "delete" "get" "use")
+        local keys=($(_get_db_keys "$db"))
+        COMPREPLY=($(compgen -W "${keys[*]} ${static_options[*]}" -- "$current_word"))
         return 0
     fi
 
@@ -136,12 +138,14 @@ _dynamic_alias_autocomplete()
         "add")
             _add_command_autocomplete
             ;;
-        "delete")
-            _delete_command_autocomplete "$db"
-            ;;
-        "get")
+        "delete" | "get")
             _get_command_autocomplete "$db"
             ;;
+        "use")
+            _use_command_autocomplete "$db" 4
+            ;;
+        *)
+            _use_command_autocomplete "$db" 3
         esac
 }
 
