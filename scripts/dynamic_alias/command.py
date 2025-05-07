@@ -4,7 +4,7 @@ from db import Db, DbResult
 from constant import Source
 
 class ShellCommand():
-    def __init__(self, executable: str, path: str):
+    def __init__(self, executable: str, path: Path):
         self.executable = executable
         self.path = path
 
@@ -46,5 +46,10 @@ class Get:
         if not self.args.name:
             return ShellCommand(get_executable(self.args.shell_command["cat"]), Source.database.value)
 
-        _, path = self.db.get(key=self.args.name).value()
-        return ShellCommand(get_executable(self.args.shell_command["cd"]), path)
+        try:
+            # Try to treat the value like alias
+            _, path = self.db.get(self.args.name).value()
+            return ShellCommand(get_executable(self.args.shell_command["cd"]), path)
+        except:
+            # If not, assume it is full path
+            return ShellCommand(get_executable(self.args.shell_command["cd"]), self.args.name)

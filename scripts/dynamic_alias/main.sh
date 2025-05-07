@@ -74,7 +74,8 @@ _add_command_autocomplete()
 
 _delete_command_autocomplete()
 {
-    local keys=("$@")
+    local db="$1"
+    local keys=($(_get_db_keys "$db"))
     local current_word="${COMP_WORDS[COMP_CWORD]}"
 
     # Suggest if we do not exceede current + 3 arguments (like "da get -n <curretn>")
@@ -88,21 +89,37 @@ _delete_command_autocomplete()
 
 _get_command_autocomplete()
 {
-    local keys=("$@")
+    local db="$1"
+    # Do not change it to string!
+    local keys=($(_get_db_keys "$db"))
     local current_word="${COMP_WORDS[COMP_CWORD]}"
 
-    # Suggest if we do not exceede current + 3 arguments (like "da get <alias> -e <current>") or "-e" with option was used
+    # Suggest if we do not exceede current + 3 arguments (like "da get <alias> -e <current>") or
+    # when "-e" with option was not used
     if [[ $COMP_CWORD -gt 4 || "${COMP_WORDS[COMP_CWORD-2]}" == "-e" ]]; then
         COMPREPLY=()
-    # If a known key (like "home") was provided, suggest "-e" only
-    elif [[ " ${keys[@]} " == *[[:space:]]"${COMP_WORDS[COMP_CWORD-1]}"[[:space:]]* ]] ; then
-        COMPREPLY=($(compgen -W "-e" -- "$current_word"))
     # If "-e" flag is used suggest exe files
     elif [[ "${COMP_WORDS[COMP_CWORD-1]}" == "-e" ]]; then
         _executables_autocomplete
-    # If "get" is last word suggest "-e" and all keys
-    elif [[ "${COMP_WORDS[1]}" == "get" ]]; then
-        COMPREPLY=($(compgen -W "-e ${keys[*]}" -- "$current_word"))
+    elif [[ $COMP_CWORD -eq 2 ]]; then
+        for key in "${keys[@]}"; do
+            # If no key or only part of it is used suggest completion for them
+            if [[ "$key" == "$current_word"* ]]; then
+                COMPREPLY=($(compgen -W "-e ${keys[*]}" -- "$current_word"))
+                return
+            # If full key is provided switch it to its real value
+            elif [[ "$current_word" == "$key"* ]]; then
+                local alias_path=$(jq -r --arg k "$key" '.[$k]' "$db")
+                local tail="${current_word/$key/}"
+                COMPREPLY=( $(compgen -f "$alias_path$tail" -- "$current_word" ))
+                return
+            fi
+        done
+        # Having full path suggest files we may visit
+        COMPREPLY=($(compgen -f -- "$current_word" ))
+    # If -e has not been provided yet, suggest it
+    elif [[ "$COMP_CWORD" -le 3 || "${COMP_WORDS[COMP_CWORD-1]}" != "-e" ]]; then
+        COMPREPLY=($(compgen -W "-e" -- "$current_word"))
     fi
 }
 
@@ -110,7 +127,6 @@ _dynamic_alias_autocomplete()
 {
     local current_path="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
     local db="$current_path/.database.json"
-    local db_keys=("$(_get_db_keys "$db")")
 
     # No option has been selected so far so suggest these options
     if [[ "${COMP_WORDS[COMP_CWORD-1]}" == "da" ]]; then
@@ -125,10 +141,10 @@ _dynamic_alias_autocomplete()
             _add_command_autocomplete
             ;;
         "delete")
-            _delete_command_autocomplete "${db_keys[@]}"
+            _delete_command_autocomplete "$db"
             ;;
         "get")
-            _get_command_autocomplete "${db_keys[@]}"
+            _get_command_autocomplete "$db"
             ;;
         esac
 }
