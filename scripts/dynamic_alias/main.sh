@@ -15,10 +15,6 @@ _dynamic_alias()
     local current_path="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
     local db="$current_path/.database.json"
 
-    if [[ ! -f "$db" ]]; then
-        echo "{}" > "$db"
-    fi
-
     local result="$(python3 "$current_path/main.py" "$@")"
     if [[ "$result" == "Command:"* ]]; then
         eval "${result#Command: }"
