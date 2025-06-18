@@ -3,6 +3,7 @@ from typing import Any
 
 from constant import Source
 
+
 class DbResult:
     def __init__(self, value: Any):
         self._value = value
@@ -13,6 +14,7 @@ class DbResult:
     def __str__(self) -> str:
         return str(self._value)
 
+
 class DbSuccess(DbResult):
     def __init__(self, value: Any, message: str):
         super().__init__(value)
@@ -21,6 +23,7 @@ class DbSuccess(DbResult):
     def __str__(self) -> str:
         return f"DBSuccess: {self.message} - '{self.value()}'."
 
+
 class DbError(Exception):
     def __init__(self, value: Any, message: str):
         self._value = value
@@ -28,6 +31,7 @@ class DbError(Exception):
 
     def value(self):
         return self._value
+
 
 class Db:
     def __init__(self, source: Source):
@@ -47,7 +51,9 @@ class Db:
 
     def add(self, key: Any, value: Any) -> DbResult:
         if key in self.database:
-            raise DbError((key, self.database[key]), "Key already exists in the database")
+            raise DbError(
+                (key, self.database[key]), "Key already exists in the database"
+            )
 
         self.database[key] = value
         self.__dump__()
@@ -56,7 +62,7 @@ class Db:
     def delete(self, key: Any) -> DbResult:
         if key not in self.database:
             raise DbError(key, "Key does not exist in the database")
-        
+
         value = self.database[key]
         del self.database[key]
         self.__dump__()
