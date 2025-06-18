@@ -1,12 +1,9 @@
 #!/bin/bash
 # ======================================= INSTRUCTIONS =========================================== #
-# Script argument: Name of the directory whose files you want to inspect with treecat.
-# This script will tab-complete available directories.
+# Script argument: A directory path to inspect with treecat. Autocompletion works like 'cd'.
 # ================================================================================================ #
 
 # ======================================== FUNCTIONS ============================================== #
-# Helper functions
-# ================================================================================================ #
 _treecat()
 {
     local current_path="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
@@ -15,22 +12,13 @@ _treecat()
 
 _treecat_autocompletion()
 {
-    local current_word="${COMP_WORDS[COMP_CWORD]}"
-    local dir_list=". .."
-
-    for dir in */; do
-        [[ -d "$dir" ]] && dir_list="$dir_list ${dir%/}"
-    done
-
-    COMPREPLY=( $(compgen -W "$dir_list" -- "$current_word") )
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    COMPREPLY=( $(compgen -d -- "$cur") )
+    compopt -o filenames
 }
 
 # ========================================= ALIAS ================================================= #
-# Define the alias command name
-# ================================================================================================ #
 alias treecat="_treecat"
 
 # =================================== AUTOCOMPLETION ============================================== #
-# Enable autocompletion for the alias
-# ================================================================================================ #
-complete -o default -F _treecat_autocompletion treecat
+complete -F _treecat_autocompletion treecat
