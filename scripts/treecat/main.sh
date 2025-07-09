@@ -7,7 +7,7 @@
 _treecat()
 {
     local current_path="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
-    python3 "$current_path/main.py" "$1"
+    python3 "$current_path/main.py" "$@"
 }
 
 _treecat_autocompletion()
