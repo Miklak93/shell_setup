@@ -68,24 +68,10 @@ function Set-Files {
 # Set up aliases and dynamic alias data
 function Set-Aliases {
     $LocalAliasesPath = "$ShellSetupConfigurationPath\local_aliases.ps1"
-    $DynamicAliasPath = "$ShellSetupScriptsPath\dynamic_alias\.dynamic_alias_data.ps1"
 
     if (-not (Test-Path $LocalAliasesPath)) {
         New-Item -ItemType File -Path $LocalAliasesPath
     }
-
-    # Initialize dynamic alias data
-    $Content = @"
-home C:\Users\$env:UserName
-shell_setup $ShellSetupPath
-scripts $ShellSetupScriptsPath
-"@
-
-    # Ensure the directory exists before creating the file
-    if (-not (Test-Path (Split-Path $DynamicAliasPath))) {
-        New-Item -ItemType File -Path $DynamicAliasPath
-    }
-    Set-Content -Path $DynamicAliasPath -Value $Content -Force
 }
 
 # Set up the profile by appending the profile.ps1 reference
@@ -117,6 +103,11 @@ function Set-Profile {
 
 function Reset-Shell {
     Remove-Item -Path $ShellSetupDonePath -Force
+
+    $profileDir = Split-Path $PROFILE
+    if (-not (Test-Path $profileDir)) {
+        New-Item -ItemType Directory -Path $profileDir -Force
+    }
 
     Set-Links
     Set-Files

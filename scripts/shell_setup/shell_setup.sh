@@ -49,21 +49,8 @@ _set_aliases()
 {
     # Local aliases - ignored by git
     local local_aliases_path="$SHELL_SETUP_CONFIGURATION_PATH/local_aliases.sh"
-    local dynamic_alias_path="$SHELL_SETUP_SCRIPTS_PATH/dynamic_alias/.dynamic_alias_data.sh"
-
+    
     touch "$local_aliases_path"
-    if [[ $? -ne 0 ]]; then
-        return 1
-    fi
-
-    # Dynamic alias database initialization
-    local content=""
-    content="${content}home /home/$USER"$'\n'
-    content="${content}shell_setup $SHELL_SETUP_PATH"$'\n'
-    content="${content}scripts $SHELL_SETUP_SCRIPTS_PATH"$'\n'
-
-    echo "${content}" > $dynamic_alias_path
-
     if [[ $? -ne 0 ]]; then
         return 1
     fi
