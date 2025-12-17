@@ -12,3 +12,6 @@ shell/configuration/local_aliases.ps1
 scripts/dynamic_alias/.database.json
 scripts/shell_setup/.shell_setup_done.sh
 scripts/shell_setup/.shell_setup_done.ps1
+
+# work scripts
+scripts/terraform

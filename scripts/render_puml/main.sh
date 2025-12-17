@@ -10,23 +10,30 @@
 # ======================================== FUNCTIONS ============================================= #
 # Helper functions
 # ================================================================================================ #
-_git_push_autocompletion()
+_render_puml_autocompletion()
 {
     COMPREPLY=()
+    local options="-i --input -o --output -v --verbose"
+    local current="${COMP_WORDS[COMP_CWORD]}"
+    local previous="${COMP_WORDS[COMP_CWORD-1]}"
 
-    local current_word="${COMP_WORDS[COMP_CWORD]}"
-    local possible_words="private draft master main"
+    # 1. If previous was -i or -o, suggest files/paths
+    if [[ "$previous" == "-i" || "$previous" == "-o" || "$previous" == "--input" || "$previous" == "--output" ]]; then
+        COMPREPLY=( $(compgen -f -- "$current") )
+        return 0
+    fi
 
-    COMPREPLY=( $(compgen -W "${possible_words}" -- ${current_word}) )
+    # 2. Otherwise, suggest options
+    COMPREPLY=( $(compgen -W "${options}" -- "$current") )
     return 0
 }
 
 # ========================================= ALIAS ================================================ #
 # Define the name of the command as it appears in the shell                                        #
 # ================================================================================================ #
-alias git-push="python3 "$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"/main.py"
+alias render-puml="python3 "$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"/main.py"
 
 #===================================== AUTOCOMPLETION ============================================ #
 # Enable autocompletion for the command in the shell                                               #
 # ================================================================================================ #
-complete -o nospace -F _git_push_autocompletion git-push
+complete -o nospace -F _render_puml_autocompletion render-puml
