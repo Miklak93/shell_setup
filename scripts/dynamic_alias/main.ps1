@@ -10,7 +10,7 @@
 # Helper functions
 # ================================================================================================ #
 function Invoke-DynamicAlias {
-    $Result = py "$env:ShellSetupScriptsPath\dynamic_alias\main.py" $args
+    $Result = python3 "$env:ShellSetupScriptsPath\dynamic_alias\main.py" $args
 
     if ($Result -like "Command:*") {
         $rawCommand = $result.Substring(8).Trim()

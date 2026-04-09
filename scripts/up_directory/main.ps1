@@ -15,7 +15,7 @@ function Invoke-UpDirectory {
         [string]$Target
     )
 
-    $directory = py "$env:ShellSetupScriptsPath\up_directory\main.py" "$Target"
+    $directory = python3 "$env:ShellSetupScriptsPath\up_directory\main.py" "$Target"
     if ( $directory -like "Error*" ) {
         Write-Host "$directory" -ForegroundColor Red
     } else {
